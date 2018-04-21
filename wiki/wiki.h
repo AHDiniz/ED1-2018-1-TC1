@@ -26,11 +26,11 @@ void InserePagina(Wiked* wiki, Pagina* pagina);
 
 /*Retira uma página da WIKED!
 * inputs: wiki e nome da página
-* outputs: a pagina removida
+* outputs: nenhum
 * pre-condição: wiki e a página válidos
 * pos-condição: wiki não contem a página e não há links para a página
 */
-Pagina* RetiraPagina(Wiked* wiki, char* pagina);
+void RetiraPagina(Wiked* wiki, char* pagina);
 
 /*Insere um novo editor na WIKED!
 * inputs: a wiki e o editor
@@ -42,19 +42,19 @@ void InsereEditor(Wiked* wiki, Editor* editor);
 
 /*Retira um editor da WIKED!
 * inputs: a wiki e o nome do editor
-* outputs: o editor removido
+* outputs: nenhum
 * pre-condição: wiki e editor válidos
 * pos-condição: wiki não contem o editor e suas contribuições
 */
-Editor* RetiraEditor(Wiked* wiki, char* editor);
+void RetiraEditor(Wiked* wiki, char* editor);
 
 /*Retira uma contribuição de uma página da WIKED!
 * inputs: a wiki, nome da página, nome do editor e o nome do arquivo
-* outputs: contribuição retirada
+* outputs: nenhum
 * pre-condição: página, editor e contribuição válidos
 * pos-condição: contribuição recebe estado "removido"
 */
-Contribuicao* RetiraContribuicao(Wiked* wiki, char* pagina, char* editor, char* arquivo);
+void RetiraContribuicao(Wiked* wiki, char* pagina, char* editor, char* arquivo);
 
 /*Insere um link entre páginas
 * inputs: wiki, nome da página origem e nome da página destino
