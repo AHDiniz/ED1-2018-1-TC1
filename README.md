@@ -1,2 +1,2 @@
 # ED1-2018-1-TC1
-Wikilike prototype program for the Computer Science's Data Structure subject at UFES
+Wikilike prototype program for the Computer Science's Data Structure subject at UFES. (The files are written in portuguese)
