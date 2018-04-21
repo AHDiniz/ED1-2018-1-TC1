@@ -1,0 +1,6 @@
+O que precisa ser feito:
+
+1- Criar uma lista simplesmente encadeada, com sentinela e genérica;
+2- Definir os tipos e estruturas que deverão ser criadas e implementadas;
+3- Criar milestones, dividir tarefas e organizar tudo no Trello;
+4- Code Like Hell!!!
