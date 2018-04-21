@@ -27,8 +27,8 @@ typedef struct tipoPagina Pagina;
 /*Estrutura da contribuição
   Deve conter:
   - nome do arquivo (.txt)
-  - editor
-  - página
+  - nome do editor
+  - nome da página
   - estado (presente / removido)
 */
 typedef struct tipoContribuicao Contribuicao;
@@ -122,12 +122,12 @@ void Caminho(Wiked* wik, char* origem, char* destino);
 void ImprimePagina(Wiked* wik, char* pagina);
 
 /*Imprime todas as páginas da WIKED!
-* inputs: nenhum
+* inputs: a wik
 * outputs: nenhum
 * pre-condição: wik válida
 * pos-condição: nenhum
 */
-void ImprimeWiked();
+void ImprimeWiked(Wiked* wik);
 
 /*Libera toda memoria alocada na WIKED!
 * inputs: a wik
