@@ -1,6 +1,6 @@
-#ifndef LISTA_H
+#ifndef LISTA_H_
 
-#define LISTA_H
+#define LISTA_H_
 
 // Definindo um novo tipo de lista:
 typedef struct lista Lista;
@@ -8,14 +8,26 @@ typedef struct lista Lista;
 // Definindo um tipo para o item da lista:
 typedef struct item Item;
 
+// Definindo o padrão de função que libera o conteúdo de um item:
+typedef void(FreeContItem)(void *);
+
 /*
 Nova Lista:
-- Entrada: nenhuma;
+- Entrada: a string que indica o tipo de item que a lista comporta;
 - Saída: um ponteiro para uma nova lista vazia;
-- Pré-condições: nenhuma;
+- Pré-condições: o tipo deve ser algum existente no programa e preferencialmente escrito da mesma forma em que o tipo foi definido;
 - Pós-condições: a lista está vazia;
 */
-Lista* NovaLista(void);
+Lista* NovaLista(const char* tipo);
+
+/*
+Verificação de Lista Vazia:
+- Entrada: a lista a ser verificada;
+- Saída: um inteiro de comportamento booleano que diz se a lista está vazia ou não;
+- Pré-condições: a lista precisa estar alocada na memória;
+- Pós-condições: nenhum efeito colateral;
+*/
+int ListaVazia(Lista* lista);
 
 /*
 Adicionar item na lista:
@@ -29,10 +41,37 @@ void ListaAdd(Lista* lista, Item* item);
 /*
 Remover item na lista:
 - Entrada: a lista e a posição do item a ser removido;
-- Saída: o item removido;
+- Saída: nenhuma;
 - Pré-condições: a lista não pode estar vazia e a posição deve ficar entre zero e o tamanho atual da lista;
-- Pós-condições: o item é removido da lista e ela fica menor;
+- Pós-condições: o item é liberado da memória e a lista fica menor;
 */
-Item* ListaRemove(Lista* lista, int pos);
+void ListaRemove(Lista* lista, int pos, FreeContItem Func);
+
+/*
+Criação de um novo item:
+- Entrada: tag com o tipo do item e o ponteiro opaco para o conteúdo;
+- Saída: um ponteiro para um novo item;
+- Pré-condições: tanto a tag quanto o conteúdo não podem apontar para NULL;
+- Pós-condições: nenhum efeito colateral;
+*/
+Item* NovoItem(const char* tipo, void* conteudo);
+
+/*
+Verificação de item com conteúdo opaco:
+- Entrada: o item a ser verificado;
+- Saída: um inteiro com comportamento booleano que diz se o item tem ou não um conteúdo opaco;
+- Pré-condições: o item já deve ter sido alocado;
+- Pós-condições: nenhum efeito colateral;
+*/
+int ItemVazio(Item* item);
+
+/*
+Liberação de item da memória:
+- Entrada: o item a ser liberado da memória e o ponteiro para a função que libera o conteúdo;
+- Sáida: um inteiro com comportamento booleano que diz se operação ocorreu ou não da forma devida;
+- Pré-condições: o item deve estar alocado na memória e a função deve existir e seguir o padrão determinado para a função que libera o conteúdo de um item;
+- Pós-condições: o item está vazio;
+*/
+int LiberaItem(Item* item, FreeContItem Func);
 
 #endif
