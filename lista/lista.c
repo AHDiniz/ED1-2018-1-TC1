@@ -1,3 +1,11 @@
+/********************************************
+Trabalho ED1 2018/1: Sistema colaborativo
+
+Alan Herculano Diniz e Rafael Belmock Pedruzzi
+
+lista.c: implementações para lista genérica
+********************************************/
+
 #include "lista.h"
 #include <stdio.h>
 #include <stdlib.h>
