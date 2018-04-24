@@ -1,3 +1,11 @@
+/********************************************
+Trabalho ED1 2018/1: Sistema colaborativo
+
+Alan Herculano Diniz e Rafael Belmock Pedruzzi
+
+contribuicao.h: definições para contribuições
+********************************************/
+
 #ifndef CONTRIBUICAO_H_
 #define CONTRIBUICAO_H_
 
@@ -6,7 +14,7 @@
   - nome do arquivo (.txt)
   - nome do editor
   - nome da página
-  - estado (presente / removido)
+  - estado (presente = 1 / removido = 0)
 */
 typedef struct tipoContribuicao Contribuicao;
 
@@ -14,7 +22,7 @@ typedef struct tipoContribuicao Contribuicao;
 * inputs: nome da página, nome do editor e nome do arquivo
 * outputs: a contribuição
 * pre-condição: nome do arquivo, editor e página válidos
-* pos-condição: contribuição criada e linkada ao editor e a página
+* pos-condição: contribuição criada
 */
 Contribuicao* InicializaContribuicao(char* pagina, char* editor, char* arquivo);
 

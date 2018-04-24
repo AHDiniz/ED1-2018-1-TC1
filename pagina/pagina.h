@@ -1,3 +1,11 @@
+/********************************************
+Trabalho ED1 2018/1: Sistema colaborativo
+
+Alan Herculano Diniz e Rafael Belmock Pedruzzi
+
+pagina.h: definições para páginas
+********************************************/
+
 #ifndef PAGINA_H_
 #define PAGINA_H_
 

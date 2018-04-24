@@ -1,3 +1,11 @@
+/********************************************
+Trabalho ED1 2018/1: Sistema colaborativo
+
+Alan Herculano Diniz e Rafael Belmock Pedruzzi
+
+editor.h: definições para editores
+********************************************/
+
 #ifndef EDITOR_H_
 #define EDITOR_H_
 

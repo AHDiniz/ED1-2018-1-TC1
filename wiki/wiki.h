@@ -1,3 +1,11 @@
+/********************************************
+Trabalho ED1 2018/1: Sistema colaborativo
+
+Alan Herculano Diniz e Rafael Belmock Pedruzzi
+
+wiki.h: definições para implementação da WikED!
+********************************************/
+
 #ifndef WIKI_H_
 #define WIKI_H_
 
@@ -14,7 +22,7 @@ typedef struct tipoWiked Wiked;
 * pre-condição: nenhum
 * pos-condição: wiki criada e vazia
 */
-Wiked* Inicializawiki(void);
+Wiked* InicializaWiki(void);
 
 /*Insere uma página na WIKED!
 * inputs: a wiki e a página
