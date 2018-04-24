@@ -1,7 +1,13 @@
+/********************************************
+Trabalho ED1 2018/1: Sistema colaborativo
+
+Alan Herculano Diniz e Rafael Belmock Pedruzzi
+
+log.h: definições para mensagens de erro e para função Caminho
+********************************************/
+
 #ifndef LOG_H_
 #define LOG_H_
-
-/* TAD destinado unicamente as possiveis mensagens de resposta do arquivo log.txt */
 
 /*mensagem de resposta da função Caminho
 * inputs: confirmação, nome da origem e nome do destino
