@@ -55,6 +55,19 @@ Lista* NovaLista(const char* tipo)
     return lista;
 }
 
+// Destruindo a lista na memória:
+void DestroiLista(Lista* lista, FreeContItem Func)
+{
+    // Verificando se a lista não está vazia para destruir cada item ainda existente:
+    if (!ListaVazia(lista))
+    {
+        for (int i = 0; i < lista->comprimento; i++) // Varrendo a lista para destruir os itens
+            ListaRemove(lista, 0, Func); // Removendo cada item da lista até ela ficar vazia
+    }
+    free(lista->tipo); // Liberando a tag de tipo da lista
+    free(lista); // Liberando a lista em si
+}
+
 // Verificação de lista vazia:
 int ListaVazia(Lista* lista)
 {
