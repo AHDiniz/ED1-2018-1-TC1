@@ -17,7 +17,7 @@ typedef struct lista Lista;
 typedef struct item Item;
 
 // Definindo o padrão de função que libera o conteúdo de um item:
-typedef void(FreeContItem)(void *);
+typedef void FreeContItem(void*);
 
 /*
 Nova Lista:
@@ -27,6 +27,15 @@ Nova Lista:
 - Pós-condições: a lista está vazia;
 */
 Lista* NovaLista(const char* tipo);
+
+/*
+Destruição de Lista:
+- Entrada: um ponteiro para a lista que será destruída e outro para a função de liberação de conteúdo de item;
+- Saída: nenhuma;
+- Pré-condições: a lista deve estar alocada na memória;
+- Pós-condições: os itens da lista que ainda estão nela serão destruídos também;
+*/
+void DestroiLista(Lista* lista, FreeContItem Func);
 
 /*
 Verificação de Lista Vazia:
