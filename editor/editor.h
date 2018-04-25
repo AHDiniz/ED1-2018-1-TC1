@@ -24,12 +24,20 @@ typedef struct tipoEditor Editor;
 */
 Editor* InicializaEditor(char* nome);
 
+/*Insere uma contribuição num editor
+* inputs: o editor e a contribuição
+* outputs: nenhum
+* pre-condição: editor e contribuição válidos
+* pos-condição: editor contêm a contribuição
+*/
+void InsereContribuicaoEditor(Editor* editor, Contribuicao* contribuicao);
+
 /*Libera toda memória alocada em um editor
-* inputs: editor
-* outputs: NULL
+* inputs: editor com ponteiro genérico
+* outputs: nenhum
 * pre-condição: editor não nulo
 * pos-condição: toda memória liberada
 */
-Editor* DestroiEditor(Editor* editor);
+void DestroiEditor(void* editor);
 
 #endif

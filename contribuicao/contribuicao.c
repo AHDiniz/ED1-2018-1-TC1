@@ -11,13 +11,6 @@ contribuicao.c: implementações para contribuições
 #include <string.h>
 #include "contribuicao.h"
 
-/*Estrutura da contribuição
-  Deve conter:
-  - nome do arquivo (.txt)
-  - nome do editor
-  - nome da página
-  - estado (presente = 1 / removido = 0)
-*/
 struct tipoContribuicao
 {
 
@@ -46,12 +39,20 @@ Contribuicao* InicializaContribuicao(char* pagina, char* editor, char* arquivo)
     return c;
 }
 
-Contribuicao* DestroiContribuicao(Contribuicao* contribuicao){
+/*Retira uma contribuição de uma página da WIKED!
+* inputs: a contribuição
+* outputs: nenhum
+* pre-condição: contribuição válida
+* pos-condição: contribuição recebe estado "removido" (estado = 0)
+*/
+void RetiraContribuicao(Contribuicao* contribuicao);
+
+void DestroiContribuicao(void* contribuicao){
+
+    Contribuicao *c = (Contribuicao*) contribuicao;
 
     free(c->arquivo);
     free(c->editor);
     free(c->pagina);
     free(c);
-
-    return NULL;
 }

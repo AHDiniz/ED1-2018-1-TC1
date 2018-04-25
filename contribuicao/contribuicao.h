@@ -26,12 +26,20 @@ typedef struct tipoContribuicao Contribuicao;
 */
 Contribuicao* InicializaContribuicao(char* pagina, char* editor, char* arquivo);
 
+/*Retira uma contribuição de uma página da WIKED!
+* inputs: a contribuição
+* outputs: nenhum
+* pre-condição: contribuição válida
+* pos-condição: contribuição recebe estado "removido" (estado = 0)
+*/
+void RetiraContribuicao(Contribuicao* contribuicao);
+
 /*Libera toda memória alocada em um editor
-* inputs: contribuição
-* outputs: NULL
+* inputs: contribuição com ponteiro genérico
+* outputs: nenhum
 * pre-condição: contribuição não nula
 * pos-condição: toda memória liberada
 */
-Contribuicao* DestroiContribuicao(Contribuicao* contribuicao);
+void DestroiContribuicao(void* contribuicao);
 
 #endif
