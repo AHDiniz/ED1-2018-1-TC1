@@ -9,7 +9,7 @@ wiki.h: definições para implementação da WikED!
 #ifndef WIKI_H_
 #define WIKI_H_
 
-#include ":pagina/pagina.h" 
+#include "../pagina/pagina.h" 
 
 /*Estrutura da WIKED!
   Deve conter:
