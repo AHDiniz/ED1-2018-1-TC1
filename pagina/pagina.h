@@ -9,8 +9,8 @@ pagina.h: definições para páginas
 #ifndef PAGINA_H_
 #define PAGINA_H_
 
-#include ":contribuicao/contribuicao.h"
-#include ":editor/editor.h"
+#include "../contribuicao/contribuicao.h"
+#include "../editor/editor.h"
 
 /*Estrutura da página
   Deve conter:
