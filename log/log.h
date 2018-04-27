@@ -27,7 +27,7 @@ void CaminhoResposta(int i, char* origem, char* destino);
 * pos-condição: nenhum
 * mensagem: "ERRO: nao existe a pagina %s"
 */
-void Erro001(char* pagina);
+void ErroPagInexistente(char* pagina);
 
 /*Erro002: editor inexistente
 * inputs: nome do editor
@@ -36,7 +36,7 @@ void Erro001(char* pagina);
 * pos-condição: nenhum
 * mensagem: "ERRO: nao existe o editor %s"
 */
-void Erro002(char* editor);
+void ErroEdtInexistente(char* editor);
 
 /*Erro003: contribuição inexistente
 * inputs: nome da contribuição
@@ -45,7 +45,7 @@ void Erro002(char* editor);
 * pos-condição: nenhum
 * mensagem: "ERRO: nao existe a contribuicao %s"
 */
-void Erro003(char* contribuicao);
+void ErroContInexistente(char* contribuicao);
 
 /*Erro004: página incorreta
 * inputs: nome da página
@@ -54,7 +54,7 @@ void Erro003(char* contribuicao);
 * pos-condição: nenhum
 * mensagem: "ERRO: pagina %s incorreta"
 */
-void Erro004(char* pagina);
+void ErroPagIncorreta(char* pagina);
 
 /*Erro005: editor incorreto
 * inputs: nome do editor
@@ -63,6 +63,33 @@ void Erro004(char* pagina);
 * pos-condição: nenhum
 * mensagem: "ERRO: editor %s incorreto"
 */
-void Erro005(char* editor);
+void ErroEdtIncorreto(char* editor);
+
+/*Erro006: página já existe
+* inputs: nome da página
+* outputs: nenhum
+* pre-condição: nenhum
+* pos-condição: nenhum
+* mensagem: "ERRO: pagina %s ja existe"
+*/
+void ErroPagExiste(char* pagina);
+
+/*Erro007: editor já existe
+* inputs: nome do editor
+* outputs: nenhum
+* pre-condição: nenhum
+* pos-condição: nenhum
+* mensagem: "ERRO: editor %s ja existe"
+*/
+void ErroEdtExiste(char* editor);
+
+/*Erro008: contribuição já existe
+* inputs: nome da contribuição
+* outputs: nenhum
+* pre-condição: nenhum
+* pos-condição: nenhum
+* mensagem: "ERRO: a contribuicao %s ja existe"
+*/
+void ErroContExiste(char* contribuicao);
 
 #endif
