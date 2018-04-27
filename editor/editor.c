@@ -7,34 +7,42 @@ editor.c: implementações para editores
 ********************************************/
 
 #include "editor.h"
-#include "lista.h"
+#include "../lista/lista.h"
+#include "../contribuicao/contribuicao.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-/*Estrutura do editor
-  Deve conter:
-  - nome do editor
-  - contribuições
-*/
 struct tipoEditor{
 
     char *nome;
     Lista *contribuicoes;
 };
 
-/*Inicializa um editor
-* inputs: nome do editor
-* outputs: o editor criado
-* pre-condição: nome do editor único
-* pos-condição: editor criado e vazio
-*/
-Editor* InicializaEditor(const char* nome);
+Editor* InicializaEditor(const char* nome)
+{
+  Editor *e = (Editor*) malloc(sizeof(Editor)); // inicializando o struct
 
-/*Libera toda memória alocada em um editor
-* inputs: editor
-* outputs: NULL
-* pre-condição: editor não nulo
-* pos-condição: toda memória liberada
-*/
-void DestroiEditor(void* editor);
+    e->nome = (char*) malloc(strlen(nome) +1); // alocando espaço da string nome
+    strcpy(e->nome,nome);                      // copiando nome
+
+    e->contribuicoes = NovaLista("Contribuicao"); // inicializando lista de contribuições vazia
+}
+
+void InsereContribuicaoEditor(Editor* editor, Contribuicao* contribuicao)
+{
+    Item *item = NovoItem("Contribuicao",contribuicao); // cria um item para a contribuição
+
+    ListaAdd(editor->contribuicoes,item); // inclui o item na lista de contribuições
+}
+
+void DestroiEditor(void* editor)
+{
+    Editor *e = (Editor*) editor; // convertendo para ponteiro de tipo Editor
+
+    free(e->nome); // liberando o nome
+
+    DestroiLista(e->contribuicoes, DestroiContribuicao); // liberando a lista
+
+    free(e); // liberando o struct
+}
