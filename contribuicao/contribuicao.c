@@ -41,7 +41,7 @@ Contribuicao* InicializaContribuicao(char* pagina, char* editor, char* arquivo)
 
 void RetiraContribuicao(Contribuicao* contribuicao)
 {
-    contribuicao->estado = 0;
+    contribuicao->estado = 0; // Alterando estado para "removido"
 }
 
 void DestroiContribuicao(void* contribuicao)
