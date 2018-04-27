@@ -27,7 +27,7 @@ typedef struct tipoPagina Pagina;
 * pre-condição: nome da página único
 * pos-condição: página criada e vazia
 */
-Pagina* InicializaPagina(char* pagina, char* arquivo);
+Pagina* InicializaPagina(const char* pagina, const char* arquivo);
 
 /*Insere um link entre páginas
 * inputs: a página origem e a página destino

@@ -21,7 +21,7 @@ struct tipoContribuicao
 };
 
 // Inicializa um struct contribuição
-Contribuicao* InicializaContribuicao(char* pagina, char* editor, char* arquivo)
+Contribuicao* InicializaContribuicao(const char* pagina, const char* editor, const char* arquivo)
 {
     Contribuicao *c = (Contribuicao*) malloc(sizeof(Contribuicao)); // alocando espaço para a struct
 

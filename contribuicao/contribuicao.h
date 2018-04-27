@@ -24,7 +24,7 @@ typedef struct tipoContribuicao Contribuicao;
 * pre-condição: nome do arquivo, editor e página válidos
 * pos-condição: contribuição criada
 */
-Contribuicao* InicializaContribuicao(char* pagina, char* editor, char* arquivo);
+Contribuicao* InicializaContribuicao(const char* pagina, const char* editor, const char* arquivo);
 
 /*Retira uma contribuição de uma página da WIKED!
 * inputs: a contribuição

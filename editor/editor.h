@@ -22,7 +22,7 @@ typedef struct tipoEditor Editor;
 * pre-condição: nome do editor único
 * pos-condição: editor criado e vazio
 */
-Editor* InicializaEditor(char* nome);
+Editor* InicializaEditor(const char* nome);
 
 /*Insere uma contribuição num editor
 * inputs: o editor e a contribuição
