@@ -74,6 +74,12 @@ int ListaVazia(Lista* lista)
     return (lista->comprimento == 0); // Se o comprimento da lista é igual a zero, então não há nenhum item nela
 }
 
+// Tamanho da lista:
+int TamanhoLista(Lista* lista)
+{
+    return (lista->comprimento);
+}
+
 // Adicionando um item na lista:
 void ListaAdd(Lista* lista, Item* item)
 {

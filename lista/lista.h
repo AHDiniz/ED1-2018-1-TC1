@@ -47,6 +47,15 @@ Verificação de Lista Vazia:
 int ListaVazia(Lista* lista);
 
 /*
+Tamanho da lista:
+- Entrada: ponteiro para a lista a ser analisada;
+- Sáida: tamanho da lista analisada;
+- Pré-condições: lista alocada e não vazia;
+- Pós-condições: nenhum efeito colateral;
+*/
+int TamanhoLista(Lista* lista);
+
+/*
 Adicionar item na lista:
 - Entrada: a lista e o item a ser adicionado;
 - Saída: nenhuma;
