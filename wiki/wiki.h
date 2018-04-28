@@ -9,8 +9,6 @@ wiki.h: definições para implementação da WikED!
 #ifndef WIKI_H_
 #define WIKI_H_
 
-#include "../pagina/pagina.h" 
-
 /*Estrutura da WIKED!
   Deve conter:
   - páginas
@@ -27,12 +25,12 @@ typedef struct tipoWiked Wiked;
 Wiked* InicializaWiki(void);
 
 /*Insere uma página na WIKED!
-* inputs: a wiki e o nome da página
+* inputs: a wiki, o nome da página e o nome do arquivo da página
 * outputs: nenhum
 * pre-condição: wiki e página válidos
 * pos-condição: pagina pertence a wiki
 */
-void InserePagina(Wiked* wiki, char* pagina);
+void InserePaginaWiki(Wiked* wiki, char* pagina, char* arquivo);
 
 /*Retira uma página da WIKED!
 * inputs: wiki e nome da página
@@ -40,7 +38,7 @@ void InserePagina(Wiked* wiki, char* pagina);
 * pre-condição: wiki e a página válidos
 * pos-condição: wiki não contem a página e não há links para a página
 */
-void RetiraPagina(Wiked* wiki, char* pagina);
+void RetiraPaginaWiki(Wiked* wiki, char* pagina);
 
 /*Insere um novo editor na WIKED!
 * inputs: a wiki e o nome do editor
@@ -48,7 +46,7 @@ void RetiraPagina(Wiked* wiki, char* pagina);
 * pre-condição: wiki e editor válidos
 * pos-condição: wiki contem o editor
 */
-void InsereEditor(Wiked* wiki, char* editor);
+void InsereEditorWiki(Wiked* wiki, char* editor);
 
 /*Retira um editor da WIKED!
 * inputs: a wiki e o nome do editor
@@ -56,7 +54,7 @@ void InsereEditor(Wiked* wiki, char* editor);
 * pre-condição: wiki e editor válidos
 * pos-condição: wiki não contem o editor e suas contribuições
 */
-void RetiraEditor(Wiked* wiki, char* editor);
+void RetiraEditorWiki(Wiked* wiki, char* editor);
 
 /*Insere uma contribuição numa página e num editor da WikED!
 * inputs: a wiki, nome da página, nome do editor e nome da contribuição
@@ -64,7 +62,7 @@ void RetiraEditor(Wiked* wiki, char* editor);
 * pre-condição: wiki, página, editor e contribuição válidos
 * pos-condição: página e editor contêm a contribuição
 */
-void InsereContribuicao(Wiked* wiki, char* pagina, char* editor, char* arquivo);
+void InsereContribuicaoWiki(Wiked* wiki, char* pagina, char* editor, char* arquivo);
 
 /*Retira uma contribuição de uma página da WIKED!
 * inputs: a wiki, nome da página, nome do editor e o nome do arquivo
