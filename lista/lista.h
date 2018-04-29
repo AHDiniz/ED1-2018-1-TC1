@@ -80,7 +80,7 @@ Achar item na lista:
 - Pré-condições: lista alocada e não vazia e posição válida;
 - Pós-condições: nenhum efeito colateral;
 */
-Item* AchaItem(Lista* lista, const unsigned int pos);
+void* AchaItem(Lista* lista, const unsigned int pos);
 
 /*
 Criação de um novo item:

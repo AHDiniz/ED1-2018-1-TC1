@@ -155,7 +155,7 @@ void ListaRemove(Lista* lista, const unsigned int pos, FreeContItem Func)
 }
 
 // Achando um item na lista:
-Item* AchaItem(Lista* lista, const unsigned int pos)
+void* AchaItem(Lista* lista, const unsigned int pos)
 {
     Item* ret = lista->primeiro; // Ponteiro que apontará para o item procurado
     // Procurando o item desejado:
@@ -164,7 +164,7 @@ Item* AchaItem(Lista* lista, const unsigned int pos)
             break;
         else
             ret = ret->proximo;
-    return ret; // Retornando o item procurado
+    return ret->conteudo; // Retornando o conteudo do item procurado
 }
 
 // Alocando um novo item dinamicamente:
