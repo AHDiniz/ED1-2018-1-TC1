@@ -40,9 +40,16 @@ void DestroiEditor(void* editor)
 {
     Editor *e = (Editor*) editor; // convertendo para ponteiro de tipo Editor
 
+    // caso esteja vazio aborta-se a função
+    if(e == NULL)
+    {
+        return;
+    }
+
     free(e->nome); // liberando o nome
 
     DestroiLista(e->contribuicoes, DestroiContribuicao); // liberando a lista
 
     free(e); // liberando o struct
+    e = NULL; // medida de segurança
 }

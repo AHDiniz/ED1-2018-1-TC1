@@ -51,19 +51,29 @@ void DestroiContribuicao(void* contribuicao)
 {
     // convertendo para Contrbuicao*
     Contribuicao *c = (Contribuicao*) contribuicao;
+
+    // caso esteja vazio aborta-se a função
+    if(c == NULL)
+    {
+        return;
+    }
+
     // Liberando as strings
     free(c->arquivo); // liberando arquivo
 
     if(c->editor != NULL) // verificando se a string já não foi removida (pertençe somente ao histórico)
     {
         free(c->editor); // liberando editor
+        c->editor = NULL; // medida de sugurança
     }
 
     if(c->pagina != NULL) // verificando se a string já não foi removida (pertençe somente ao histórico)
     {
         free(c->pagina); // liberando pagina
+        c->pagina = NULL; // medida de sugurança
     }
 
     // Liberando a contribuição
     free(c);
+    c = NULL; // medida de sugurança
 }
