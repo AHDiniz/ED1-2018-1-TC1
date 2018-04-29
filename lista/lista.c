@@ -14,10 +14,10 @@ lista.c: implementações para lista genérica
 // Implementando uma lista genérica:
 struct lista
 {
-    Item* primeiro;  // Ponteiro para o primeiro item da lista
-    Item* ultimo;    // Ponteiro para o último item da lista
-    char* tipo;      // Tag com o tipo de item que a lista contém
-    int comprimento; // Comprimento da lista (quantidade de itens)
+    Item* primeiro;           // Ponteiro para o primeiro item da lista
+    Item* ultimo;             // Ponteiro para o último item da lista
+    char* tipo;               // Tag com o tipo de item que a lista contém
+    unsigned int comprimento; // Comprimento da lista (quantidade de itens)
 };
 
 // Implementando um item de uma lista genérica:
@@ -66,6 +66,7 @@ void DestroiLista(Lista* lista, FreeContItem Func)
     }
     free(lista->tipo); // Liberando a tag de tipo da lista
     free(lista); // Liberando a lista em si
+    lista = NULL;
 }
 
 // Verificação de lista vazia:
@@ -98,7 +99,7 @@ void ListaAdd(Lista* lista, Item* item)
 }
 
 // Removendo um item da lista:
-void ListaRemove(Lista* lista, int pos, FreeContItem Func)
+void ListaRemove(Lista* lista, const unsigned int pos, FreeContItem Func)
 {
     int i;
     if (pos == 0) // Se o item a ser retirado é o primeiro
@@ -153,6 +154,19 @@ void ListaRemove(Lista* lista, int pos, FreeContItem Func)
     lista->comprimento--; // Atualizando o valor do comprimento da lista
 }
 
+// Achando um item na lista:
+Item* AchaItem(Lista* lista, const unsigned int pos)
+{
+    Item* ret = lista->primeiro; // Ponteiro que apontará para o item procurado
+    // Procurando o item desejado:
+    for (int i = 0; i < lista->comprimento; i++)
+        if (ret->posicao == pos)
+            break;
+        else
+            ret = ret->proximo;
+    return ret; // Retornando o item procurado
+}
+
 // Alocando um novo item dinamicamente:
 Item* NovoItem(const char* tipo, void* conteudo)
 {
@@ -179,18 +193,19 @@ int ItemVazio(Item* item)
 // Liberação de item da memória:
 int LiberaItem(Item* item, FreeContItem Func)
 {
-    if (ItemVazio(item))
+    if (ItemVazio(item)) // Checando se o item possui conteúdo
     {
-        printf("O item possui conteudo opaco.\n");
+        printf("O item nao possui conteudo.\n");
         return 0;
     }
-    if (Func == NULL)
+    if (Func == NULL) // Checando se a função de entrada existe
     {
         printf("A funcao de entrada nao existe.\n");
         return 0;
     }
-    Func(item->conteudo);
-    free(item->tipo);
-    free(item);
+    Func(item->conteudo); // Liberando o conteúdo do item
+    free(item->tipo); // Liberando a tag de tipo do item
+    free(item); // Liberando o item
+    item = NULL;
     return 1;
 }

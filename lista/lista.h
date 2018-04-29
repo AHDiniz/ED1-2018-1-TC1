@@ -71,7 +71,16 @@ Remover item na lista:
 - Pré-condições: a lista não pode estar vazia e a posição deve ficar entre zero e o tamanho atual da lista;
 - Pós-condições: o item é liberado da memória e a lista fica menor;
 */
-void ListaRemove(Lista* lista, int pos, FreeContItem Func);
+void ListaRemove(Lista* lista, const unsigned int pos, FreeContItem Func);
+
+/*
+Achar item na lista:
+- Entrada: ponteiro para a lista e poisção do item desejado;
+- Saída: ponteiro para o item procurado;
+- Pré-condições: lista alocada e não vazia e posição válida;
+- Pós-condições: nenhum efeito colateral;
+*/
+Item* AchaItem(Lista* lista, const unsigned int pos);
 
 /*
 Criação de um novo item:
