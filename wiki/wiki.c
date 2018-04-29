@@ -141,7 +141,18 @@ void ImprimeWiked(Wiked* wiki);
 * pre-condição: wiki não nula
 * pos-condição: toda memória liberada
 */
-void destroiWiked(void* wiki);
+void destroiWiked(void* wiki)
+{
+    // convertendo para tipo Wiked
+    Wiked *w = (Wiked*) wiki;
+
+    // liberando as listas
+    DestroiLista(w->paginas,DestroiPagina);
+    DestroiLista(w->editores,DestroiEditor);
+
+    // liberando o struct
+    free(w);
+}
 
 //Verifica se uma página já existe e retorna sua posição
 static int ProcuraPagina(Wiked* wiki,char* pagina)
@@ -159,7 +170,7 @@ static int ProcuraPagina(Wiked* wiki,char* pagina)
     {
         p = (Pagina*) AchaItem(wiki->paginas,i);
 
-        if(p == NULL)
+        if(p != NULL)
         {
             if(strcmp(p->nome,pagina) == 0)
             {
