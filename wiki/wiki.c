@@ -37,11 +37,11 @@ void InserePaginaWiki(Wiked* wiki, char* pagina, char* arquivo)
 {
     if(ProcuraPagina(wiki,pagina) >= -1) // verifica se ja existe uma página com esse nome ou se a lista é nula
     {
-        ErroPagExiste(pagina); // caso sim: uma mansagem de erro sera exibina em log.txt
+        ErroPagExiste(pagina); // caso sim, uma mansagem de erro sera exibina em log.txt
         return;                // e a função sera abortada
     }
 
-    // caso contrario: a página sera inserida normalmente
+    // caso contrario, a página sera inserida normalmente
     // inicializando a página
     Pagina *p = InicializaPagina(pagina,arquivo);
 
@@ -51,34 +51,28 @@ void InserePaginaWiki(Wiked* wiki, char* pagina, char* arquivo)
 
 void RetiraPaginaWiki(Wiked* wiki, char* pagina)
 {
-    int p = ProcuraPagina(wiki,pagina); // encontra a posição da página ou -1 caso não exista
+    int posicao = ProcuraPagina(wiki,pagina); // encontra a posição da página ou -1 caso não exista
 
     // caso a página não seja encontrada imprime mensagem de erro em lo.txt e aborta a função
-    if(p == -1)
+    if(posicao == -1)
     {
         ErroPagInexistente(pagina);
         return;
     }
 
-    ListaRemove(wiki->paginas,p,DestroiPagina); // caso seja encontrada remove a página
+    ListaRemove(wiki->paginas,posicao,DestroiPagina); // caso seja encontrada remove a página
 }
 
-/*Insere um novo editor na WIKED!
-* inputs: a wiki e o nome do editor
-* outputs: nenhum
-* pre-condição: wiki e editor válidos
-* pos-condição: wiki contem o editor
-*/
 void InsereEditorWiki(Wiked* wiki, char* editor)
 {
     // verifica e já existe um editor com esse nome
     if(ProcuraEditor(wiki,editor) >= -1)
     {
-        ErroEdtExiste(editor); // caso sim será exibida mensagem de erro em log.txt
+        ErroEdtExiste(editor); // caso sim, será exibida mensagem de erro em log.txt
         return;                // e a função sera abortada
     }
 
-    // caso contrário o editor será inserido normalmente
+    // caso contrário, o editor será inserido normalmente
     // inicializando editor
     Editor *e = InicializaEditor(editor);
 
@@ -86,13 +80,19 @@ void InsereEditorWiki(Wiked* wiki, char* editor)
     Push(wiki->editores,e,"Editor");
 }
 
-/*Retira um editor da WIKED!
-* inputs: a wiki e o nome do editor
-* outputs: nenhum
-* pre-condição: wiki e editor válidos
-* pos-condição: wiki não contem o editor e suas contribuições
-*/
-void RetiraEditorWiki(Wiked* wiki, char* editor);
+void RetiraEditorWiki(Wiked* wiki, char* editor)
+{
+    int posicao = ProcuraEditor(wiki,editor); // encontra a posição do editor ou -1 caso não exista
+
+    // caso o editor não seja encontrado imprime mensagem de erro em lo.txt e aborta a função
+    if(posicao == -1)
+    {
+        ErroEdtInexistente(editor);
+        return;
+    }
+
+    ListaRemove(wiki->editores,posicao,DestroiEditor); // caso seja encontrado remove o editor
+}
 
 /*Insere uma contribuição numa página e num editor da WikED!
 * inputs: a wiki, nome da página, nome do editor e nome da contribuição
@@ -100,7 +100,42 @@ void RetiraEditorWiki(Wiked* wiki, char* editor);
 * pre-condição: wiki, página, editor e contribuição válidos
 * pos-condição: página e editor contêm a contribuição
 */
-void InsereContribuicaoWiki(Wiked* wiki, char* pagina, char* editor, char* arquivo);
+void InsereContribuicaoWiki(Wiked* wiki, char* pagina, char* editor, char* arquivo)
+{
+    // buscando as posições da página e do editor
+    int posicaoPag = ProcuraPagina(wiki,pagina);
+    int posicaoEd = ProcuraEditor(wiki,editor);
+
+    // verifica se existe a página especificada
+    if(posicaoPag == -1)
+    {
+        ErroPagInexistente(pagina); // caso não, será exibida mensagem de erro em log.txt
+        return;                     // e a função sera abortada
+    }
+
+    // verifica se existe o editor especificado
+    if(posicaoEd == -1)
+    {
+        ErroEdtInexistente(editor); // caso não, será exibida mensagem de erro em log.txt
+        return;                     // e a função sera abortada
+    }
+
+    // verifica se o arquivo termina em .txt
+    if( ! VerificaTXT(arquivo))
+    {
+        ErroTXT(); // caso não, será exibido mensagem de erro em log.txt
+        return;    // e a função sera abortada
+    }
+
+    // inicializando a contribuição
+    Contribuicao *cont = InicializaContribuicao(pagina,editor,arquivo);
+
+    // inserindo a contribuição na página
+    InsereContribuicaoPagina( AchaItem(wiki->paginas,posicaoPag) , cont );
+
+    // inserindo contribuição no editor
+    InsereContribuicaoPagina( AchaItem(wiki->editores,posicaoEd) , cont );
+}
 
 /*Retira uma contribuição de uma página da WIKED!
 * inputs: a wiki, nome da página, nome do editor e o nome do arquivo
@@ -169,6 +204,8 @@ void destroiWiked(void* wiki)
     free(w);
 }
 
+/****************** AUXILIARES ******************/
+
 //Verifica se uma página já existe e retorna sua posição
 static int ProcuraPagina(Wiked* wiki,char* pagina)
 {
@@ -197,6 +234,7 @@ static int ProcuraPagina(Wiked* wiki,char* pagina)
     return (-1); // caso não encontrada retorna -1
 }
 
+// Verifica se um editor já existe e retorna sua posição
 static int ProcuraEditor(Wiked* wiki, char* editor)
 {
     // se a lista estiver vazia retorna -1 (página não encontrada)
@@ -229,4 +267,23 @@ static void Push(Lista* lista, void* conteudo, const char* tipo)
 {
     Item *item = NovoItem(tipo,conteudo); // definindo o item
     ListaAdd(lista,item);                 // inserindo o item
+}
+
+// verifica se a string termina em .txt
+static int VerificaTXT(char* string)
+{
+    int tamanho = strlen(string); // numero de caracteres na string
+
+    if(tamanho <= 4) // se houver 4 ou menos caracteres, .txt não eh sufixo
+    {
+        return 0; // retorno de caráter booleano
+    }
+
+    // verifica se os 4 últimos caracteres são .txt
+    if(strcmp( string + tamanho -4 ,".txt") == 0)
+    {
+        return 1; // caso sim, retorno afirmativo
+    }
+
+    return 0; // caso contrário o sufixo não eh .txt
 }

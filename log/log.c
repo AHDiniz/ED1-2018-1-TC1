@@ -103,3 +103,12 @@ void ErroContExiste(char* contribuicao)
 
     fclose(file);
 }
+
+void ErroTXT(void)
+{
+    FILE *file = fopen("log.txt","a");
+
+    fprintf(file, "ERRO: nomes de arquivos devem terminar em .txt\n");
+
+    fclose(file);
+}

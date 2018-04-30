@@ -92,4 +92,13 @@ void ErroEdtExiste(char* editor);
 */
 void ErroContExiste(char* contribuicao);
 
+/*Erro009: arquivo sem designação .txt
+* inputs: nenhum
+* outputs: nenhum
+* pre-condição: nenhum
+* pos-condição: nenhum
+* mensagem: "ERRO: nomes de arquivos devem terminar em .txt"
+*/
+void ErroTXT(void);
+
 #endif
