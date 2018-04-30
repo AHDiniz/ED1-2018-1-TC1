@@ -69,6 +69,24 @@ void ImprimePagina(Pagina* pagina);
 */
 void InsereContribuicaoPagina(Pagina* pagina, Contribuicao* contribuicao);
 
+/*Retorna o nome da página
+* inputs: a página
+* outputs: string nome da página
+* pre-condição: página não nula
+* pos-condição: página não alterada
+* AVISO: a string deve ser liberada
+*/
+char* PaginaNome(Pagina* pagina);
+
+/*Retorna o nome do arquivo da página
+* inputs: a página
+* outputs: string nome do arquivo da página
+* pre-condição: página não nula
+* pos-condição: página não alterada
+* AVISO: a string deve ser liberada
+*/
+char* PaginaArquivo(Pagina* pagina);
+
 /*Libera toda memória alocada em uma pagina
 * inputs: página com ponteiro genérico
 * outputs: nenhum

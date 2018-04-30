@@ -35,7 +35,7 @@ Wiked* InicializaWiki(void)
 
 void InserePaginaWiki(Wiked* wiki, char* pagina, char* arquivo)
 {
-    if(ProcuraPagina(wiki,pagina) != -1) // verifica se ja existe uma página com esse nome ou se a lista é nula
+    if(ProcuraPagina(wiki,pagina) >= -1) // verifica se ja existe uma página com esse nome ou se a lista é nula
     {
         ErroPagExiste(pagina); // caso sim: uma mansagem de erro sera exibina em log.txt
         return;                // e a função sera abortada
@@ -69,7 +69,22 @@ void RetiraPaginaWiki(Wiked* wiki, char* pagina)
 * pre-condição: wiki e editor válidos
 * pos-condição: wiki contem o editor
 */
-void InsereEditorWiki(Wiked* wiki, char* editor);
+void InsereEditorWiki(Wiked* wiki, char* editor)
+{
+    // verifica e já existe um editor com esse nome
+    if(ProcuraEditor(wiki,editor) >= -1)
+    {
+        ErroEdtExiste(editor); // caso sim será exibida mensagem de erro em log.txt
+        return;                // e a função sera abortada
+    }
+
+    // caso contrário o editor será inserido normalmente
+    // inicializando editor
+    Editor *e = InicializaEditor(editor);
+
+    // inserindo editor na lista
+    Push(wiki->editores,e,"Editor");
+}
 
 /*Retira um editor da WIKED!
 * inputs: a wiki e o nome do editor
@@ -172,7 +187,34 @@ static int ProcuraPagina(Wiked* wiki,char* pagina)
 
         if(p != NULL)
         {
-            if(strcmp(p->nome,pagina) == 0)
+            if(strcmp(PaginaNome(p),pagina) == 0)
+            {
+                 return i;
+            }
+        }
+    }
+
+    return (-1); // caso não encontrada retorna -1
+}
+
+static int ProcuraEditor(Wiked* wiki, char* editor)
+{
+    // se a lista estiver vazia retorna -1 (página não encontrada)
+    if(ListaVazia(wiki->editores))
+    {
+        return (-1);
+    }
+
+    Editor *e; // definindo ponteiro de busca
+
+    // para cada página na lista, verifica se seu nome eh igual ao procurado. Caso sim retorna sua posição
+    for(i = 0 ; i < TamanhoLista(wiki->editores) ; i++)
+    {
+        e = (Editor*) AchaItem(wiki->editores,i);
+
+        if(e != NULL)
+        {
+            if(strcmp(EditorNome(e),editor) == 0)
             {
                  return i;
             }

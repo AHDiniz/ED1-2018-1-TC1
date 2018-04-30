@@ -32,6 +32,15 @@ Editor* InicializaEditor(const char* nome);
 */
 void InsereContribuicaoEditor(Editor* editor, Contribuicao* contribuicao);
 
+/*Retorna o nome do editor
+* inputs: o editor
+* outputs: string nome do editor
+* pre-condição: editor não nulo
+* pos-condição: editor não alterado
+* AVISO: a string deve ser liberada
+*/
+char* EditorNome(Editor* editor);
+
 /*Libera toda memória alocada em um editor
 * inputs: editor com ponteiro genérico
 * outputs: nenhum

@@ -47,6 +47,35 @@ void RetiraContribuicao(Contribuicao* contribuicao)
     free(contribuicao->pagina); // liberando a página para poupar memória
 }
 
+char* ContribuicaoArquivo(Contribuicao* contribuicao)
+{
+    char *arq = (char*) malloc(strlen(contribuicao->arquivo) +1); // alocando espaço nescessario para a string
+    strcpy(arq,contribuicao->arquivo);                            // copiado a string
+
+    return arq;
+}
+
+char* ContribuicaoEditor(Contribuicao* contribuicao)
+{
+    char *ed = (char*) malloc(strlen(contribuicao->editor) +1); // alocando espaço nescessario para a string
+    strcpy(ed,contribuicao->editor);                            // copiado a string
+
+    return ed;
+}
+
+char* ContribuicaoPagina(Contribuicao* contribuicao)
+{
+    char *pag = (char*) malloc(strlen(contribuicao->pagina) +1); // alocando espaço nescessario para a string
+    strcpy(pag,contribuicao->pagina);                            // copiado a string
+
+    return pag;
+}
+
+int ContribuicaoEstado(Contribuicao* contribuicao)
+{
+    return contribuicao->estado;
+}
+
 void DestroiContribuicao(void* contribuicao)
 {
     // convertendo para Contrbuicao*

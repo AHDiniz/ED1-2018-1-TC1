@@ -29,10 +29,45 @@ Contribuicao* InicializaContribuicao(const char* pagina, const char* editor, con
 /*Retira uma contribuição de uma página da WIKED!
 * inputs: a contribuição
 * outputs: nenhum
-* pre-condição: contribuição válida
+* pre-condição: contribuição não nula
 * pos-condição: contribuição recebe estado "removido" (estado = 0)
 */
 void RetiraContribuicao(Contribuicao* contribuicao);
+
+/*Retorna o nome do arquivo de uma contribuição
+* inputs: a contribuição
+* outputs: string nome do arquivo da contribuição
+* pre-condição: contribuição não nula
+* pos-condição: contribuição não alterada
+* AVISO: a string deve ser liberada
+*/
+char* ContribuicaoArquivo(Contribuicao* contribuicao);
+
+/*Retorna o nome do editor de uma contribuição
+* inputs: a contribuição
+* outputs: string nome do editor da contribuição
+* pre-condição: contribuição não nula
+* pos-condição: contribuição não alterada
+* AVISO: a string deve ser liberada
+*/
+char* ContribuicaoEditor(Contribuicao* contribuicao);
+
+/*Retorna o nome da página de uma contribuição
+* inputs: a contribuição
+* outputs: string nome da página da contribuição
+* pre-condição: contribuição não nula
+* pos-condição: contribuição não alterada
+* AVISO: a string deve ser liberada
+*/ 
+char* ContribuicaoPagina(Contribuicao* contribuicao);
+
+/*Retorna o estado de uma contribuição
+* inputs: a contribuição
+* outputs: int de caráter booleano informando o estado
+* pre-condição: contribuição não nula
+* pos-condição: contribuição não alterada
+*/
+int ContribuicaoEstado(Contribuicao* contribuicao);
 
 /*Libera toda memória alocada em um editor
 * inputs: contribuição com ponteiro genérico

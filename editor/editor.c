@@ -36,6 +36,14 @@ void InsereContribuicaoEditor(Editor* editor, Contribuicao* contribuicao)
     ListaAdd(editor->contribuicoes,item); // inclui o item na lista de contribuições
 }
 
+char* EditorNome(Editor* editor)
+{
+    char *nome = (char*) malloc(strlen(editor->nome) +1); // alocando espaço nescessario para a string
+    strcpy(nome,editor->nome);                            // copiado a string
+
+    return nome;
+}
+
 void DestroiEditor(void* editor)
 {
     Editor *e = (Editor*) editor; // convertendo para ponteiro de tipo Editor
