@@ -45,11 +45,11 @@ void ErroEdtInexistente(char* editor)
 }
 
 // Erro003: contribuição inexistente
-void ErroContInexistente(char* contribuicao)
+void ErroContInexistente(char* contribuicao, char* pagina)
 {
     FILE *file = fopen("log.txt","a");
 
-    fprintf(file, "ERRO: nao existe a contribuicao %s\n", contribuicao);
+    fprintf(file, "ERRO: nao existe a contribuicao %s na pagina %s\n", contribuicao, pagina);
 
     fclose(file);
 }

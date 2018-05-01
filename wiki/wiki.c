@@ -143,7 +143,59 @@ void InsereContribuicaoWiki(Wiked* wiki, char* pagina, char* editor, char* arqui
 * pre-condição: wiki, página, editor e contribuição válidos
 * pos-condição: contribuição recebe estado "removido"
 */
-void RetiraContribuicaoWiki(Wiked* wiki, char* pagina, char* editor, char* arquivo);
+void RetiraContribuicaoWiki(Wiked* wiki, char* pagina, char* editor, char* arquivo)
+{
+    // buscando as posições da página e do editor
+    int posicaoPag = ProcuraPagina(wiki,pagina);
+    int posicaoEd = ProcuraEditor(wiki,editor);
+
+    // verifica se existe a página especificada
+    if(posicaoPag == -1)
+    {
+        ErroPagInexistente(pagina); // caso não, será exibida mensagem de erro em log.txt
+        return;                     // e a função sera abortada
+    }
+
+    // verifica se existe o editor especificado
+    if(posicaoEd == -1)
+    {
+        ErroEdtInexistente(editor); // caso não, será exibida mensagem de erro em log.txt
+        return;                     // e a função sera abortada
+    }
+
+    // verifica se o arquivo termina em .txt
+    if( ! VerificaTXT(arquivo))
+    {
+        ErroTXT(); // caso não, será exibido mensagem de erro em log.txt
+        return;    // e a função sera abortada
+    }
+
+    // buscando a página da contribuição
+    Pagina *pag = (Pagina*) AchaItem(wiki->paginas,posicaoPag);
+
+    // buscando a posição da contribuição
+    int posicaoCont = ProcuraContribuicao(pag,arquivo);
+
+    // verifica se existe a contribuição na página fornecida
+    if(posicaoCont == -1)
+    {
+        ErroContInexistente(arquivo,pagina); // caso não, será exibido mensagem de erro em log.txt
+        return;                              // e a função sera abortada
+    }
+
+    // buscando a contribuição
+    Contribuicao *cont = AchaItem(pag,posicaoCont);
+
+    // verificando o editor da contribuição
+    if( strcmp( ContribuicaoEditor(cont), editor) != 0)
+    {
+        ErroEdtIncorreto(editor); // caso incorreto, será exibido mensagem de erro em log.txt
+        return;                   // e a função sera abortada
+    }
+
+    // retirando a contribuição
+    RetiraContribuicao(cont);
+}
 
 /*Insere um link entre páginas
 * inputs: wiki, nome da página origem e nome da página destino
@@ -185,12 +237,6 @@ void ImprimePaginaWiki(Wiked* wiki, char* pagina);
 */
 void ImprimeWiked(Wiked* wiki);
 
-/*Libera toda memoria alocada na WIKED!
-* inputs: a wiki com ponteiro genérico
-* outputs: nenhum
-* pre-condição: wiki não nula
-* pos-condição: toda memória liberada
-*/
 void destroiWiked(void* wiki)
 {
     // convertendo para tipo Wiked
@@ -216,18 +262,22 @@ static int ProcuraPagina(Wiked* wiki,char* pagina)
     }
 
     Pagina *p; // definindo ponteiro de busca
+    char *nome; // string auxiliar
 
     // para cada página na lista, verifica se seu nome eh igual ao procurado. Caso sim retorna sua posição
     for(i = 0 ; i < TamanhoLista(wiki->paginas) ; i++)
     {
-        p = (Pagina*) AchaItem(wiki->paginas,i);
+        p = (Pagina*) AchaItem(wiki->paginas,i); // atualizando ponteiro de busca
 
-        if(p != NULL)
+        if(p != NULL) // medida de segurança
         {
-            if(strcmp(PaginaNome(p),pagina) == 0)
+            nome = PaginaNome(p); // nome de "p"
+            if(strcmp(nome,pagina) == 0) // compara nome de "pagina" com nome de "p"
             {
-                 return i;
+                free(nome); // libera nome
+                return i;   // retorna posição
             }
+            free(nome); // libera nome
         }
     }
 
@@ -244,17 +294,53 @@ static int ProcuraEditor(Wiked* wiki, char* editor)
     }
 
     Editor *e; // definindo ponteiro de busca
+    char *nome; // string auxiliar
 
     // para cada página na lista, verifica se seu nome eh igual ao procurado. Caso sim retorna sua posição
     for(i = 0 ; i < TamanhoLista(wiki->editores) ; i++)
     {
-        e = (Editor*) AchaItem(wiki->editores,i);
+        e = (Editor*) AchaItem(wiki->editores,i); // atualizando ponteiro de busca
 
-        if(e != NULL)
+        if(e != NULL) // medida de segurança
         {
-            if(strcmp(EditorNome(e),editor) == 0)
+            nome = EditorNome(e);        // nome do editor "e"
+            if(strcmp(nome,editor) == 0) // compara nome de "editor" com nome de "e"
             {
-                 return i;
+                free(nome); // libera nome
+                return i;   // retorna a posição
+            }
+            free(nome); // libera nome
+        }
+    }
+
+    return (-1); // caso não encontrada retorna -1
+}
+
+// verifica se uma contribuição ja existe e retorna sua posição
+static int ProcuraContribuicao(Pagina* pagina ,char* arquivo)
+{
+    Lista *conts = PaginaContribuicoes(pagina);
+
+    // se a lista estiver vazia retorna -1 (contribuição não encontrada)
+    if(ListaVazia(conts))
+    {
+        return (-1);
+    }
+
+    Contribuicao *c; // definindo ponteiro de busca
+    char *nome; // string auxiliar
+
+    // para cada contribuição na lista, verifica se seu arquivo eh igual ao procurado. Caso sim retorna sua posição
+    for(i = 0 ; i < TamanhoLista(conts) ; i++)
+    {
+        c = (Contribuicao*) AchaItem(conts,i); // atualizando ponteiro de busca
+
+        if(c != NULL) // medida de segurança
+        {
+            nome = ContribuicaoArquivo(c); // nome do arquivo "c"
+            if(strcmp(nome,arquivo) == 0) // compara nome de "arquivo" com nome de "c"
+            {
+                return i;   // retorna a posição
             }
         }
     }

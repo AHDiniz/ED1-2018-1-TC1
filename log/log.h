@@ -39,13 +39,13 @@ void ErroPagInexistente(char* pagina);
 void ErroEdtInexistente(char* editor);
 
 /*Erro003: contribuição inexistente
-* inputs: nome da contribuição
+* inputs: nome da contribuição e nome da página
 * outputs: nenhum
 * pre-condição: nenhum
 * pos-condição: nenhum
-* mensagem: "ERRO: nao existe a contribuicao %s"
+* mensagem: "ERRO: nao existe a contribuicao %s na pagina %s"
 */
-void ErroContInexistente(char* contribuicao);
+void ErroContInexistente(char* contribuicao, char* pagina);
 
 /*Erro004: página incorreta
 * inputs: nome da página

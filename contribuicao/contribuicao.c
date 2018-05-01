@@ -45,6 +45,7 @@ void RetiraContribuicao(Contribuicao* contribuicao)
 
     free(contribuicao->editor); // liberando o editor para poupar memória
     free(contribuicao->pagina); // liberando a página para poupar memória
+    contribuicao->editor = contribuicao->pagina = NULL;
 }
 
 char* ContribuicaoArquivo(Contribuicao* contribuicao)

@@ -87,6 +87,14 @@ char* PaginaNome(Pagina* pagina);
 */
 char* PaginaArquivo(Pagina* pagina);
 
+/*Retorna um ponteiro para as contribuições da página
+* inputs: a página
+* outputs: ponteiro para lista de contribuições
+* pre-condição: página não nula
+* pos-condição: página não alterada
+*/
+Lista* PaginaContribuicoes(Pagina* pagina);
+
 /*Libera toda memória alocada em uma pagina
 * inputs: página com ponteiro genérico
 * outputs: nenhum
