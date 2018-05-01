@@ -101,4 +101,31 @@ void ErroContExiste(char* contribuicao);
 */
 void ErroTXT(void);
 
+/*Erro010: link já existe
+* inputs: páginas origem e destino
+* outputs: nenhum
+* pre-condição: nenhum
+* pos-condição: nenhum
+* mensagem: "ERRO: ja existe link de %s para %s"
+*/
+void ErroLinkExiste(char* origem, char* destino);
+
+/*Erro011: link não existe
+* inputs: páginas origem e destino
+* outputs: nenhum
+* pre-condição: nenhum
+* pos-condição: nenhum
+* mensagem: "ERRO: nao existe link de %s para %s"
+*/
+void ErroLinkInexistente(char* origem, char* destino);
+
+/*Erro012: wiki vazia
+* inputs: nenhum
+* outputs: nenhum
+* pre-condição: nenhum
+* pos-condição: nenhum
+* mensagem: "ERRO: a WikED! está vazia"
+*/
+void ErroWikiVazia(void);
+
 #endif
