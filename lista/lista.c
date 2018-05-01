@@ -209,3 +209,9 @@ int LiberaItem(Item* item, FreeContItem Func)
     item = NULL;
     return 1;
 }
+
+// Conteúdo de um item:
+void* ConteudoItem(Item* item)
+{
+    return item->conteudo;
+}

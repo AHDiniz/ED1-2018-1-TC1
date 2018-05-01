@@ -44,11 +44,6 @@ char* EditorNome(Editor* editor)
     return nome;
 }
 
-Lista* EditorContribuicoes(Editor* editor)
-{
-    return editor->contribuicoes;
-}
-
 void DestroiEditor(void* editor)
 {
     Editor *e = (Editor*) editor; // convertendo para ponteiro de tipo Editor

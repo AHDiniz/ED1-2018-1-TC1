@@ -45,11 +45,11 @@ void ErroEdtInexistente(char* editor)
 }
 
 // Erro003: contribuição inexistente
-void ErroContInexistente(char* contribuicao, char* pagina)
+void ErroContInexistente(char* contribuicao)
 {
     FILE *file = fopen("log.txt","a");
 
-    fprintf(file, "ERRO: nao existe a contribuicao %s na pagina %s\n", contribuicao, pagina);
+    fprintf(file, "ERRO: nao existe a contribuicao %s\n", contribuicao);
 
     fclose(file);
 }
@@ -104,42 +104,11 @@ void ErroContExiste(char* contribuicao)
     fclose(file);
 }
 
-// Erro009: arquivo sem designação .txt
 void ErroTXT(void)
 {
     FILE *file = fopen("log.txt","a");
 
     fprintf(file, "ERRO: nomes de arquivos devem terminar em .txt\n");
-
-    fclose(file);
-}
-
-//Erro010: link já existe
-void ErroLinkExiste(char* origem, char* destino)
-{
-    FILE *file = fopen("log.txt","a");
-
-    fprintf(file, "ERRO: ja existe link de %s para %s\n", origem, destino);
-
-    fclose(file);
-}
-
-//Erro011: link não existe
-void ErroLinkInexistente(char* origem, char* destino)
-{
-    FILE *file = fopen("log.txt","a");
-
-    fprintf(file, "ERRO: nao existe link de %s para %s\n", origem, destino);
-
-    fclose(file);
-}
-
-//Erro012: wiki vazia
-void ErroWikiVazia(void)
-{
-    FILE *file = fopen("log.txt","a");
-
-    fprintf(file, "ERRO: a WikED! está vazia\n");
 
     fclose(file);
 }

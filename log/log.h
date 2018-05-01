@@ -39,13 +39,13 @@ void ErroPagInexistente(char* pagina);
 void ErroEdtInexistente(char* editor);
 
 /*Erro003: contribuição inexistente
-* inputs: nome da contribuição e nome da página
+* inputs: nome da contribuição
 * outputs: nenhum
 * pre-condição: nenhum
 * pos-condição: nenhum
-* mensagem: "ERRO: nao existe a contribuicao %s na pagina %s"
+* mensagem: "ERRO: nao existe a contribuicao %s"
 */
-void ErroContInexistente(char* contribuicao, char* pagina);
+void ErroContInexistente(char* contribuicao);
 
 /*Erro004: página incorreta
 * inputs: nome da página
@@ -100,32 +100,5 @@ void ErroContExiste(char* contribuicao);
 * mensagem: "ERRO: nomes de arquivos devem terminar em .txt"
 */
 void ErroTXT(void);
-
-/*Erro010: link já existe
-* inputs: páginas origem e destino
-* outputs: nenhum
-* pre-condição: nenhum
-* pos-condição: nenhum
-* mensagem: "ERRO: ja existe link de %s para %s"
-*/
-void ErroLinkExiste(char* origem, char* destino);
-
-/*Erro011: link não existe
-* inputs: páginas origem e destino
-* outputs: nenhum
-* pre-condição: nenhum
-* pos-condição: nenhum
-* mensagem: "ERRO: nao existe link de %s para %s"
-*/
-void ErroLinkInexistente(char* origem, char* destino);
-
-/*Erro012: wiki vazia
-* inputs: nenhum
-* outputs: nenhum
-* pre-condição: nenhum
-* pos-condição: nenhum
-* mensagem: "ERRO: a WikED! está vazia"
-*/
-void ErroWikiVazia(void);
 
 #endif

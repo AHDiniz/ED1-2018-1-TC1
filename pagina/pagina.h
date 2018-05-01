@@ -9,8 +9,12 @@ pagina.h: definições para páginas
 #ifndef PAGINA_H_
 #define PAGINA_H_
 
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include "../contribuicao/contribuicao.h"
 #include "../editor/editor.h"
+#include "../lista/lista.h"
 
 /*Estrutura da página
   Deve conter:
@@ -87,13 +91,23 @@ char* PaginaNome(Pagina* pagina);
 */
 char* PaginaArquivo(Pagina* pagina);
 
-/*Retorna um ponteiro para as contribuições da página
-* inputs: a página
-* outputs: ponteiro para lista de contribuições
-* pre-condição: página não nula
-* pos-condição: página não alterada
+/*
+Retorno da lista de contribuições:
+- Entrada: ponteiro para a página;
+- Saída: ponteiro para a lista de contribuições;
+- Pré-condições: página alocada e não nula;
+- Pós-condições: nenhum efeito colateral;
 */
-Lista* PaginaContribuicoes(Pagina* pagina);
+Lista* ListaContrbPagina(Pagina* pagina);
+
+/*
+Retorno da lista de links:
+- Entrada: ponteiro para a página;
+- Saída: ponteiro para a lista de links;
+- Pré-condições: página alocada e não nula;
+- Pós-condições: nenhum efeito colateral;
+*/
+Lista* ListaLinksPagina(Pagina *pagina);
 
 /*Libera toda memória alocada em uma pagina
 * inputs: página com ponteiro genérico

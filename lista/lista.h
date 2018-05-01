@@ -109,4 +109,13 @@ Liberação de item da memória:
 */
 int LiberaItem(Item* item, FreeContItem Func);
 
+/*
+Conteúdo de um item:
+- Entrada: ponteiro para o item;
+- Saída: ponteiro opaco para conteúdo:
+- Pré-condições: o item deve estar alocado e com conteúdo;
+- Pós-condições: nenhum efeito colateral;
+*/
+void* ConteudoItem(Item* item);
+
 #endif

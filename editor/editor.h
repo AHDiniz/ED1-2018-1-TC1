@@ -41,14 +41,6 @@ void InsereContribuicaoEditor(Editor* editor, Contribuicao* contribuicao);
 */
 char* EditorNome(Editor* editor);
 
-/*Retorna um ponteiro para as contribuições do editor
-* inputs: o editor
-* outputs: ponteiro para lista de contribuições
-* pre-condição: editor não nulo
-* pos-condição: editor não alterado
-*/
-Lista* EditorContribuicoes(Editor* editor);
-
 /*Libera toda memória alocada em um editor
 * inputs: editor com ponteiro genérico
 * outputs: nenhum
