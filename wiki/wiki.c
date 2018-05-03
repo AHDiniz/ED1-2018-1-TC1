@@ -94,12 +94,6 @@ void RetiraEditorWiki(Wiked* wiki, char* editor)
     ListaRemove(wiki->editores,posicao,DestroiEditor); // caso seja encontrado remove o editor
 }
 
-/*Insere uma contribuição numa página e num editor da WikED!
-* inputs: a wiki, nome da página, nome do editor e nome da contribuição
-* outputs: nenhum
-* pre-condição: wiki, página, editor e contribuição válidos
-* pos-condição: página e editor contêm a contribuição
-*/
 void InsereContribuicaoWiki(Wiked* wiki, char* pagina, char* editor, char* arquivo)
 {
     // buscando as posições da página e do editor
@@ -131,66 +125,203 @@ void InsereContribuicaoWiki(Wiked* wiki, char* pagina, char* editor, char* arqui
     Contribuicao *cont = InicializaContribuicao(pagina,editor,arquivo);
 
     // inserindo a contribuição na página
-    InsereContribuicaoPagina( AchaItem(wiki->paginas,posicaoPag) , cont );
+    InsereContribuicaoPagina( (Pagina*) AchaItem(wiki->paginas,posicaoPag) , cont );
 
     // inserindo contribuição no editor
-    InsereContribuicaoPagina( AchaItem(wiki->editores,posicaoEd) , cont );
+    InsereContribuicaoPagina( (Pagina*) AchaItem(wiki->editores,posicaoEd) , cont );
 }
 
-/*Retira uma contribuição de uma página da WIKED!
-* inputs: a wiki, nome da página, nome do editor e o nome do arquivo
-* outputs: nenhum
-* pre-condição: wiki, página, editor e contribuição válidos
-* pos-condição: contribuição recebe estado "removido"
-*/
-void RetiraContribuicaoWiki(Wiked* wiki, char* pagina, char* editor, char* arquivo);
+void RetiraContribuicaoWiki(Wiked* wiki, char* pagina, char* editor, char* arquivo)
+{
+    // buscando as posições da página e do editor
+    int posicaoPag = ProcuraPagina(wiki,pagina);
+    int posicaoEd = ProcuraEditor(wiki,editor);
 
-/*Insere um link entre páginas
-* inputs: wiki, nome da página origem e nome da página destino
-* outputs: nenhum
-* pre-condição: wiki e páginas válidas
-* pos-condição: link existe na página origem e aponta para a página destino
-*/
-void InsereLinkWiki(Wiked* wiki, char* origem, char* destino);
+    // verifica se existe a página especificada
+    if(posicaoPag == -1)
+    {
+        ErroPagInexistente(pagina); // caso não, será exibida mensagem de erro em log.txt
+        return;                     // e a função sera abortada
+    }
 
-/*Retira um link de uma página
-* inputs: wiki, nome da página origem e nome da página destino
-* outputs: nenhum
-* pre-condição: wiki e páginas válidas
-* pos-condição: origem não contem link para destino
-*/
-void RetiraLinkWiki(Wiked* wiki, char* origem, char* destino);
+    // verifica se existe o editor especificado
+    if(posicaoEd == -1)
+    {
+        ErroEdtInexistente(editor); // caso não, será exibida mensagem de erro em log.txt
+        return;                     // e a função sera abortada
+    }
 
-/*Verifica se há um link entre duas páginas (resposta impressa no arquivo log.txt)
-* inputs: wiki, nome da página origem e nome da página destino
-* outputs: nenhum
-* pre-condição: wiki e páginas válidas
-* pos-condição: nenhum
-*/
-void CaminhoWiki(Wiked* wiki, char* origem, char* destino);
+    // verifica se o arquivo termina em .txt
+    if( ! VerificaTXT(arquivo))
+    {
+        ErroTXT(); // caso não, será exibido mensagem de erro em log.txt
+        return;    // e a função sera abortada
+    }
 
-/*Imprime uma página num arquivo .txt
-* inputs: wiki e nome da página
-* outputs: nenhum
-* pre-condição: wiki e página válidos
-* pos-condição: nenhum
-*/
-void ImprimePaginaWiki(Wiked* wiki, char* pagina);
+    // buscando a página da contribuição
+    Pagina *pag = (Pagina*) AchaItem(wiki->paginas,posicaoPag);
 
-/*Imprime todas as páginas da WIKED!
-* inputs: a wiki
-* outputs: nenhum
-* pre-condição: wiki válida
-* pos-condição: nenhum
-*/
-void ImprimeWiked(Wiked* wiki);
+    // buscando a posição da contribuição
+    int posicaoCont = ProcuraContribuicao(pag,arquivo);
 
-/*Libera toda memoria alocada na WIKED!
-* inputs: a wiki com ponteiro genérico
-* outputs: nenhum
-* pre-condição: wiki não nula
-* pos-condição: toda memória liberada
-*/
+    // verifica se existe a contribuição na página fornecida
+    if(posicaoCont == -1)
+    {
+        ErroContInexistente(arquivo,pagina); // caso não, será exibido mensagem de erro em log.txt
+        return;                              // e a função sera abortada
+    }
+
+    // buscando a contribuição
+    Contribuicao *cont = (Contribuicao*) AchaItem(pag,posicaoCont);
+
+    // verificando o editor da contribuição
+    char *edt = ContribuicaoEditor(cont); // buscando nome do editor
+    if( strcmp( edt, editor) != 0)
+    {
+        ErroEdtIncorreto(editor); // caso incorreto, será exibido mensagem de erro em log.txt
+        return;                   // e a função sera abortada
+    }
+
+    // retirando a contribuição
+    RetiraContribuicao(cont);
+
+    // liberando auxiliar
+    free(edt);
+}
+
+void InsereLinkWiki(Wiked* wiki, char* origem, char* destino)
+{
+    // buscando as posições da página origem e destino
+    int posicaoOrigem = ProcuraPagina(wiki,origem);
+    int posicaoDestino = ProcuraPagina(wiki,destino);
+
+    // verifica se existe a página origem
+    if(posicaoOrigem == -1)
+    {
+        ErroPagInexistente(origem); // caso não, será exibida mensagem de erro em log.txt
+        return;                     // e a função sera abortada
+    }
+
+    // verifica se existe a página destino
+    if(posicaoDestino == -1)
+    {
+        ErroPagInexistente(destino); // caso não, será exibida mensagem de erro em log.txt
+        return;                      // e a função sera abortada
+    }
+
+    // buscando as paginas
+    Pagina *o = (Pagina*) AchaItem(wiki->paginas,posicaoOrigem);
+    Pagina *d = (Pagina*) AchaItem(wiki->paginas,posicaoDestino);
+
+    // verifica se já existe um link entre as páginas
+    if(Caminho(o,d))
+    {
+        ErroLinkExiste(origem,destino); // caso sim, será exibida mensagem de erro em log.txt
+        return;                         // e a função sera abortada
+    }
+
+    // inserindo link
+    InsereLink(o,d);
+}
+
+void RetiraLinkWiki(Wiked* wiki, char* origem, char* destino)
+{
+    // buscando as posições da página origem e destino
+    int posicaoOrigem = ProcuraPagina(wiki,origem);
+    int posicaoDestino = ProcuraPagina(wiki,destino);
+
+    // verifica se existe a página origem
+    if(posicaoOrigem == -1)
+    {
+        ErroPagInexistente(origem); // caso não, será exibida mensagem de erro em log.txt
+        return;                     // e a função sera abortada
+    }
+
+    // verifica se existe a página destino
+    if(posicaoDestino == -1)
+    {
+        ErroPagInexistente(destino); // caso não, será exibida mensagem de erro em log.txt
+        return;                      // e a função sera abortada
+    }
+
+    // buscando as paginas
+    Pagina *o = (Pagina*) AchaItem(wiki->paginas,posicaoOrigem);
+    Pagina *d = (Pagina*) AchaItem(wiki->paginas,posicaoDestino);
+
+    // verifica se existe um link entre as páginas
+    if(Caminho(o,d) == 0)
+    {
+        ErroLinkInexistente(origem,destino); // caso não, será exibida mensagem de erro em log.txt
+        return;                              // e a função sera abortada
+    }
+
+    // removendo o link
+    RetiraLink(o,d);
+}
+
+void CaminhoWiki(Wiked* wiki, char* origem, char* destino)
+{
+    // buscando as posições da página origem e destino
+    int posicaoOrigem = ProcuraPagina(wiki,origem);
+    int posicaoDestino = ProcuraPagina(wiki,destino);
+
+    // verifica se existe a página origem
+    if(posicaoOrigem == -1)
+    {
+        ErroPagInexistente(origem); // caso não, será exibida mensagem de erro em log.txt
+        return;                     // e a função sera abortada
+    }
+
+    // verifica se existe a página destino
+    if(posicaoDestino == -1)
+    {
+        ErroPagInexistente(destino); // caso não, será exibida mensagem de erro em log.txt
+        return;                      // e a função sera abortada
+    }
+
+    // buscando as paginas
+    Pagina *o = (Pagina*) AchaItem(wiki->paginas,posicaoOrigem);
+    Pagina *d = (Pagina*) AchaItem(wiki->paginas,posicaoDestino);
+
+    // verificando e imprimindo resposta em log.txt
+    CaminhoResposta( Caminho(o,d), origem, destino);
+}
+
+void ImprimePaginaWiki(Wiked* wiki, char* pagina)
+{
+    // buscando a posição da página
+    int posicao = ProcuraPagina(wiki,pagina);
+
+    // verifica se existe a página especificada
+    if(posicao == -1)
+    {
+        ErroPagInexistente(pagina); // caso não, será exibida mensagem de erro em log.txt
+        return;                     // e a função sera abortada
+    }
+
+    // buscando a pagina
+    Pagina *pag = (Pagina*) AchaItem(wiki->paginas,posicao);
+
+    // imprimindo a página
+    ImprimePagina(pag);
+}
+
+void ImprimeWiked(Wiked* wiki)
+{
+    // verifica se a lista de páginas está vazia
+    if(ListaVazia(wiki->paginas))
+    {
+        ErroWikiVazia(); // caso sim, exibe mensagem de erro em log.txt
+        return;          // e aborta a função
+    }
+
+    // imprimindo cada página da wiki
+    for(i = 0 ; i < TamanhoLista(wiki->paginas) ; i++) // para cada posição na lista
+    {
+        ImprimePagina( (Pagina*) AchaItem(wiki->paginas,i) ); // imprime o objeto da posição
+    }
+}
+
 void destroiWiked(void* wiki)
 {
     // convertendo para tipo Wiked
@@ -216,18 +347,22 @@ static int ProcuraPagina(Wiked* wiki,char* pagina)
     }
 
     Pagina *p; // definindo ponteiro de busca
+    char *nome; // string auxiliar
 
     // para cada página na lista, verifica se seu nome eh igual ao procurado. Caso sim retorna sua posição
     for(i = 0 ; i < TamanhoLista(wiki->paginas) ; i++)
     {
-        p = (Pagina*) AchaItem(wiki->paginas,i);
+        p = (Pagina*) AchaItem(wiki->paginas,i); // atualizando ponteiro de busca
 
-        if(p != NULL)
+        if(p != NULL) // medida de segurança
         {
-            if(strcmp(PaginaNome(p),pagina) == 0)
+            nome = PaginaNome(p); // nome de "p"
+            if(strcmp(nome,pagina) == 0) // compara nome de "pagina" com nome de "p"
             {
-                 return i;
+                free(nome); // libera nome
+                return i;   // retorna posição
             }
+            free(nome); // libera nome
         }
     }
 
@@ -244,17 +379,53 @@ static int ProcuraEditor(Wiked* wiki, char* editor)
     }
 
     Editor *e; // definindo ponteiro de busca
+    char *nome; // string auxiliar
 
     // para cada página na lista, verifica se seu nome eh igual ao procurado. Caso sim retorna sua posição
     for(i = 0 ; i < TamanhoLista(wiki->editores) ; i++)
     {
-        e = (Editor*) AchaItem(wiki->editores,i);
+        e = (Editor*) AchaItem(wiki->editores,i); // atualizando ponteiro de busca
 
-        if(e != NULL)
+        if(e != NULL) // medida de segurança
         {
-            if(strcmp(EditorNome(e),editor) == 0)
+            nome = EditorNome(e);        // nome do editor "e"
+            if(strcmp(nome,editor) == 0) // compara nome de "editor" com nome de "e"
             {
-                 return i;
+                free(nome); // libera nome
+                return i;   // retorna a posição
+            }
+            free(nome); // libera nome
+        }
+    }
+
+    return (-1); // caso não encontrada retorna -1
+}
+
+// verifica se uma contribuição ja existe e retorna sua posição
+static int ProcuraContribuicao(Pagina* pagina ,char* arquivo)
+{
+    Lista *conts = PaginaContribuicoes(pagina);
+
+    // se a lista estiver vazia retorna -1 (contribuição não encontrada)
+    if(ListaVazia(conts))
+    {
+        return (-1);
+    }
+
+    Contribuicao *c; // definindo ponteiro de busca
+    char *nome; // string auxiliar
+
+    // para cada contribuição na lista, verifica se seu arquivo eh igual ao procurado. Caso sim retorna sua posição
+    for(i = 0 ; i < TamanhoLista(conts) ; i++)
+    {
+        c = (Contribuicao*) AchaItem(conts,i); // atualizando ponteiro de busca
+
+        if(c != NULL) // medida de segurança
+        {
+            nome = ContribuicaoArquivo(c); // nome do arquivo "c"
+            if(strcmp(nome,arquivo) == 0) // compara nome de "arquivo" com nome de "c"
+            {
+                return i;   // retorna a posição
             }
         }
     }

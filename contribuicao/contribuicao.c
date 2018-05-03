@@ -13,9 +13,10 @@ contribuicao.c: implementações para contribuições
 
 struct tipoContribuicao
 {
-    char* arquivo;
-    char* editor;
-    char* pagina;
+
+    char *arquivo;
+    char *editor;
+    char *pagina;
     int estado;
 };
 
@@ -44,12 +45,13 @@ void RetiraContribuicao(Contribuicao* contribuicao)
 
     free(contribuicao->editor); // liberando o editor para poupar memória
     free(contribuicao->pagina); // liberando a página para poupar memória
+    contribuicao->editor = contribuicao->pagina = NULL;
 }
 
 char* ContribuicaoArquivo(Contribuicao* contribuicao)
 {
     char *arq = (char*) malloc(strlen(contribuicao->arquivo) +1); // alocando espaço nescessario para a string
-    strcpy(arq,contribuicao->arquivo); // copiado a string
+    strcpy(arq,contribuicao->arquivo);                            // copiado a string
 
     return arq;
 }
@@ -57,7 +59,7 @@ char* ContribuicaoArquivo(Contribuicao* contribuicao)
 char* ContribuicaoEditor(Contribuicao* contribuicao)
 {
     char *ed = (char*) malloc(strlen(contribuicao->editor) +1); // alocando espaço nescessario para a string
-    strcpy(ed,contribuicao->editor); // copiado a string
+    strcpy(ed,contribuicao->editor);                            // copiado a string
 
     return ed;
 }
@@ -65,7 +67,7 @@ char* ContribuicaoEditor(Contribuicao* contribuicao)
 char* ContribuicaoPagina(Contribuicao* contribuicao)
 {
     char *pag = (char*) malloc(strlen(contribuicao->pagina) +1); // alocando espaço nescessario para a string
-    strcpy(pag,contribuicao->pagina); // copiado a string
+    strcpy(pag,contribuicao->pagina);                            // copiado a string
 
     return pag;
 }
