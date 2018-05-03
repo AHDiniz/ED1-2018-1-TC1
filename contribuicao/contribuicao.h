@@ -39,7 +39,6 @@ void RetiraContribuicao(Contribuicao* contribuicao);
 * outputs: string nome do arquivo da contribuição
 * pre-condição: contribuição não nula
 * pos-condição: contribuição não alterada
-* AVISO: a string deve ser liberada
 */
 char* ContribuicaoArquivo(Contribuicao* contribuicao);
 
@@ -48,7 +47,6 @@ char* ContribuicaoArquivo(Contribuicao* contribuicao);
 * outputs: string nome do editor da contribuição
 * pre-condição: contribuição não nula
 * pos-condição: contribuição não alterada
-* AVISO: a string deve ser liberada
 */
 char* ContribuicaoEditor(Contribuicao* contribuicao);
 
@@ -57,7 +55,6 @@ char* ContribuicaoEditor(Contribuicao* contribuicao);
 * outputs: string nome da página da contribuição
 * pre-condição: contribuição não nula
 * pos-condição: contribuição não alterada
-* AVISO: a string deve ser liberada
 */ 
 char* ContribuicaoPagina(Contribuicao* contribuicao);
 
@@ -70,11 +67,11 @@ char* ContribuicaoPagina(Contribuicao* contribuicao);
 int ContribuicaoEstado(Contribuicao* contribuicao);
 
 /*Libera toda memória alocada em um editor
-* inputs: contribuição com ponteiro genérico
+* inputs: endereço de um ponteiro genérico para contribuição
 * outputs: nenhum
 * pre-condição: contribuição não nula
 * pos-condição: toda memória liberada
 */
-void DestroiContribuicao(void* contribuicao);
+void DestroiContribuicao(void** contribuicao);
 
 #endif

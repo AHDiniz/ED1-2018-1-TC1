@@ -78,7 +78,6 @@ void InsereContribuicaoPagina(Pagina* pagina, Contribuicao* contribuicao);
 * outputs: string nome da página
 * pre-condição: página não nula
 * pos-condição: página não alterada
-* AVISO: a string deve ser liberada
 */
 char* PaginaNome(Pagina* pagina);
 
@@ -87,7 +86,6 @@ char* PaginaNome(Pagina* pagina);
 * outputs: string nome do arquivo da página
 * pre-condição: página não nula
 * pos-condição: página não alterada
-* AVISO: a string deve ser liberada
 */
 char* PaginaArquivo(Pagina* pagina);
 
@@ -110,11 +108,11 @@ Retorno da lista de links:
 Lista* ListaLinksPagina(Pagina *pagina);
 
 /*Libera toda memória alocada em uma pagina
-* inputs: página com ponteiro genérico
+* inputs: endereço de ponteiro genérico para página
 * outputs: nenhum
 * pre-condição: página não nula
 * pos-condição: página vazia e toda memória liberada
 */
-void DestroiPagina(void* pagina);
+void DestroiPagina(void** pagina);
 
 #endif

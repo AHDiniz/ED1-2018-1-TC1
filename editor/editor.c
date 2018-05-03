@@ -38,10 +38,7 @@ void InsereContribuicaoEditor(Editor* editor, Contribuicao* contribuicao)
 
 char* EditorNome(Editor* editor)
 {
-    char *nome = (char*) malloc(strlen(editor->nome) +1); // alocando espaço nescessario para a string
-    strcpy(nome,editor->nome);                            // copiado a string
-
-    return nome;
+    return editor->nome;
 }
 
 Lista* EditorContribuicoes(Editor* editor)
@@ -49,20 +46,20 @@ Lista* EditorContribuicoes(Editor* editor)
     return editor->contribuicoes;
 }
 
-void DestroiEditor(void* editor)
+void DestroiEditor(void** editor)
 {
-    Editor *e = (Editor*) editor; // convertendo para ponteiro de tipo Editor
-
     // caso esteja vazio aborta-se a função
-    if(e == NULL)
+    if(*editor == NULL)
     {
         return;
     }
 
-    free(e->nome); // liberando o nome
+    Editor **e = (Editor**) editor; // convertendo para tipo Editor
 
-    DestroiLista(e->contribuicoes, DestroiContribuicao); // liberando a lista
+    free((*e)->nome); // liberando o nome
 
-    free(e); // liberando o struct
-    e = NULL; // medida de segurança
+    DestroiLista((*e)->contribuicoes, DestroiContribuicao); // liberando a lista
+
+    free(*e); // liberando o struct
+    *e = NULL; // medida de segurança
 }

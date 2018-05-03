@@ -37,7 +37,6 @@ void InsereContribuicaoEditor(Editor* editor, Contribuicao* contribuicao);
 * outputs: string nome do editor
 * pre-condição: editor não nulo
 * pos-condição: editor não alterado
-* AVISO: a string deve ser liberada
 */
 char* EditorNome(Editor* editor);
 
@@ -50,11 +49,11 @@ char* EditorNome(Editor* editor);
 Lista* EditorContribuicoes(Editor* editor);
 
 /*Libera toda memória alocada em um editor
-* inputs: editor com ponteiro genérico
+* inputs: endereço de ponteiro genérico para editor
 * outputs: nenhum
 * pre-condição: editor não nulo
 * pos-condição: toda memória liberada
 */
-void DestroiEditor(void* editor);
+void DestroiEditor(void** editor);
 
 #endif

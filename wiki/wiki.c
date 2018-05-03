@@ -128,7 +128,7 @@ void InsereContribuicaoWiki(Wiked* wiki, char* pagina, char* editor, char* arqui
     InsereContribuicaoPagina( (Pagina*) AchaItem(wiki->paginas,posicaoPag) , cont );
 
     // inserindo contribuição no editor
-    InsereContribuicaoPagina( (Pagina*) AchaItem(wiki->editores,posicaoEd) , cont );
+    InsereContribuicaoEditor( (Editor*) AchaItem(wiki->editores,posicaoEd) , cont );
 }
 
 void RetiraContribuicaoWiki(Wiked* wiki, char* pagina, char* editor, char* arquivo)
@@ -175,8 +175,7 @@ void RetiraContribuicaoWiki(Wiked* wiki, char* pagina, char* editor, char* arqui
     Contribuicao *cont = (Contribuicao*) AchaItem(pag,posicaoCont);
 
     // verificando o editor da contribuição
-    char *edt = ContribuicaoEditor(cont); // buscando nome do editor
-    if( strcmp( edt, editor) != 0)
+    if( strcmp( ContribuicaoEditor(cont), editor) != 0)
     {
         ErroEdtIncorreto(editor); // caso incorreto, será exibido mensagem de erro em log.txt
         return;                   // e a função sera abortada
@@ -184,9 +183,6 @@ void RetiraContribuicaoWiki(Wiked* wiki, char* pagina, char* editor, char* arqui
 
     // retirando a contribuição
     RetiraContribuicao(cont);
-
-    // liberando auxiliar
-    free(edt);
 }
 
 void InsereLinkWiki(Wiked* wiki, char* origem, char* destino)
@@ -322,17 +318,18 @@ void ImprimeWiked(Wiked* wiki)
     }
 }
 
-void destroiWiked(void* wiki)
+void destroiWiked(void** wiki)
 {
     // convertendo para tipo Wiked
-    Wiked *w = (Wiked*) wiki;
+    Wiked **w = (Wiked**) wiki;
 
     // liberando as listas
-    DestroiLista(w->paginas,DestroiPagina);
-    DestroiLista(w->editores,DestroiEditor);
+    DestroiLista((*w)->paginas,DestroiPagina);
+    DestroiLista((*w)->editores,DestroiEditor);
 
     // liberando o struct
-    free(w);
+    free(*w);
+    *w = NULL; // medida de segurança
 }
 
 /****************** AUXILIARES ******************/
@@ -347,7 +344,6 @@ static int ProcuraPagina(Wiked* wiki,char* pagina)
     }
 
     Pagina *p; // definindo ponteiro de busca
-    char *nome; // string auxiliar
 
     // para cada página na lista, verifica se seu nome eh igual ao procurado. Caso sim retorna sua posição
     for(i = 0 ; i < TamanhoLista(wiki->paginas) ; i++)
@@ -356,13 +352,10 @@ static int ProcuraPagina(Wiked* wiki,char* pagina)
 
         if(p != NULL) // medida de segurança
         {
-            nome = PaginaNome(p); // nome de "p"
-            if(strcmp(nome,pagina) == 0) // compara nome de "pagina" com nome de "p"
+            if(strcmp( PaginaNome(p),pagina) == 0) // compara nome do ponteiro de busca com nome da página
             {
-                free(nome); // libera nome
                 return i;   // retorna posição
             }
-            free(nome); // libera nome
         }
     }
 
@@ -379,7 +372,6 @@ static int ProcuraEditor(Wiked* wiki, char* editor)
     }
 
     Editor *e; // definindo ponteiro de busca
-    char *nome; // string auxiliar
 
     // para cada página na lista, verifica se seu nome eh igual ao procurado. Caso sim retorna sua posição
     for(i = 0 ; i < TamanhoLista(wiki->editores) ; i++)
@@ -388,13 +380,10 @@ static int ProcuraEditor(Wiked* wiki, char* editor)
 
         if(e != NULL) // medida de segurança
         {
-            nome = EditorNome(e);        // nome do editor "e"
-            if(strcmp(nome,editor) == 0) // compara nome de "editor" com nome de "e"
+            if(strcmp( EditorNome(e),editor) == 0) // compara nome do ponteiro de busca com nome do editor
             {
-                free(nome); // libera nome
                 return i;   // retorna a posição
             }
-            free(nome); // libera nome
         }
     }
 
@@ -413,7 +402,6 @@ static int ProcuraContribuicao(Pagina* pagina ,char* arquivo)
     }
 
     Contribuicao *c; // definindo ponteiro de busca
-    char *nome; // string auxiliar
 
     // para cada contribuição na lista, verifica se seu arquivo eh igual ao procurado. Caso sim retorna sua posição
     for(i = 0 ; i < TamanhoLista(conts) ; i++)
@@ -422,8 +410,7 @@ static int ProcuraContribuicao(Pagina* pagina ,char* arquivo)
 
         if(c != NULL) // medida de segurança
         {
-            nome = ContribuicaoArquivo(c); // nome do arquivo "c"
-            if(strcmp(nome,arquivo) == 0) // compara nome de "arquivo" com nome de "c"
+            if(strcmp( ContribuicaoArquivo(c),arquivo) == 0) // compara nome do ponteiro de busca com nome da contribuição
             {
                 return i;   // retorna a posição
             }
