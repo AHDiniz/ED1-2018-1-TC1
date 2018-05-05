@@ -7,8 +7,6 @@ editor.c: implementações para editores
 ********************************************/
 
 #include "editor.h"
-#include "../lista/lista.h"
-#include "../contribuicao/contribuicao.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

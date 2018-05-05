@@ -58,15 +58,15 @@ Lista* NovaLista(const char* tipo)
 // Destruindo a lista na memória:
 void DestroiLista(Lista* lista, FreeContItem Func)
 {
+    int i, tamanho;
     // Verificando se a lista não está vazia para destruir cada item ainda existente:
     if (!ListaVazia(lista))
     {
-        for (int i = 0; i < lista->comprimento; i++) // Varrendo a lista para destruir os itens
+        for (i = 0, tamanho = lista->comprimento; i < tamanho; i++) // Varrendo a lista para destruir os itens
             ListaRemove(lista, 0, Func); // Removendo cada item da lista até ela ficar vazia
     }
     free(lista->tipo); // Liberando a tag de tipo da lista
     free(lista); // Liberando a lista em si
-    lista = NULL;
 }
 
 // Verificação de lista vazia:
@@ -115,41 +115,44 @@ void ListaRemove(Lista* lista, const unsigned int pos, FreeContItem Func)
         }
         LiberaItem(alvo, Func); // Liberando o item alvo da memória
     }
-    if (pos == lista->comprimento - 1) // Se o item a ser retirado é o primeiro
-    {
-        Item* anterior = lista->primeiro; // Auxiliar que apontará para o novo último item
-        Item* alvo = lista->ultimo; // Auxiliar para não perder a referência do item a ser removido
-        for (i = 0; i < lista->comprimento - 1; i++) // Percorrendo a lista para achar o penúltimo item
-            anterior = anterior->proximo;
-        // Atualizando o valor do último item da lista:
-        lista->ultimo = anterior;
-        anterior->proximo = NULL;
-        // Liberando o item alvo da memória:
-        LiberaItem(alvo, Func);
-    }
     else
     {
-        // Variáveis auxiliares que ajudarão a percorrer a lista:
-        Item* anterior;
-        Item* atual = lista->primeiro;
-        for (i = 0; i < lista->comprimento; i++) // Percorrendo cada item da lista
-            if (atual->posicao == pos) // Se o item atual estiver na posição desejada
-                break; // O loop será quebrado
-            else
-            {
-                // Atualizando os valores das variáveis auxiliares:
-                anterior = atual;
-                atual = atual->proximo;
-            }
-        anterior->proximo = atual->proximo; // Atualizando os valores dos ponteiros dos itens que continuam na lista
-        // Atualizando os valores das posições dos itens da lista:
-        anterior = anterior->proximo; // Primeiro item que precisa ter sua posição atualizada
-        for (i = i; i < lista->comprimento - 1; i++)
+        if (pos == lista->comprimento - 1) // Se o item a ser retirado é o último
         {
-            anterior->posicao--;
-            anterior = anterior->proximo;
+            Item* anterior = lista->primeiro; // Auxiliar que apontará para o novo último item
+            Item* alvo = lista->ultimo; // Auxiliar para não perder a referência do item a ser removido
+            for (i = 0; i < lista->comprimento - 1; i++) // Percorrendo a lista para achar o penúltimo item
+                anterior = anterior->proximo;
+            // Atualizando o valor do último item da lista:
+            lista->ultimo = anterior;
+            anterior->proximo = NULL;
+            // Liberando o item alvo da memória:
+            LiberaItem(alvo, Func);
         }
-        LiberaItem(atual, Func); // Liberando o item procurando da memória (vai acabar sendo retirado da lista)
+        else
+        {
+            // Variáveis auxiliares que ajudarão a percorrer a lista:
+            Item* anterior = lista->primeiro;
+            Item* atual = lista->primeiro->proximo;
+            for (i = 1; i < lista->comprimento -1; i++) // Percorrendo cada item da lista
+                if (atual->posicao == pos) // Se o item atual estiver na posição desejada
+                    break; // O loop será quebrado
+                else
+                {
+                    // Atualizando os valores das variáveis auxiliares:
+                    anterior = atual;
+                    atual = atual->proximo;
+                }
+            anterior->proximo = atual->proximo; // Atualizando os valores dos ponteiros dos itens que continuam na lista
+            // Atualizando os valores das posições dos itens da lista:
+            anterior = anterior->proximo; // Primeiro item que precisa ter sua posição atualizada
+            for (i += 1; i < lista->comprimento - 1; i++)
+            {
+                anterior->posicao--;
+                anterior = anterior->proximo;
+            }
+            LiberaItem(atual, Func); // Liberando o item procurando da memória (vai acabar sendo retirado da lista)
+        }
     }
     lista->comprimento--; // Atualizando o valor do comprimento da lista
 }
@@ -198,15 +201,19 @@ int LiberaItem(Item* item, FreeContItem Func)
         printf("O item nao possui conteudo.\n");
         return 0;
     }
-    if (Func == NULL) // Checando se a função de entrada existe
+    if(Func == NULL) // Checando se o ponteiro para a função existe
     {
         printf("A funcao de entrada nao existe.\n");
         return 0;
     }
-    Func(item->conteudo); // Liberando o conteúdo do item
+    if (*Func == NULL) // Checando se a função de entrada existe
+    {
+        printf("A funcao de entrada nao existe.\n");
+        return 0;
+    }
+    Func(&(item->conteudo)); // Liberando o conteúdo do item
     free(item->tipo); // Liberando a tag de tipo do item
     free(item); // Liberando o item
-    item = NULL;
     return 1;
 }
 

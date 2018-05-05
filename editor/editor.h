@@ -9,6 +9,9 @@ editor.h: definições para editores
 #ifndef EDITOR_H_
 #define EDITOR_H_
 
+#include "../lista/lista.h"
+#include "../contribuicao/contribuicao.h"
+
 /*Estrutura do editor
   Deve conter:
   - nome do editor
