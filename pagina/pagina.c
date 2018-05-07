@@ -112,17 +112,13 @@ void InsereContribuicaoPagina(Pagina* pagina, Contribuicao* contribuicao)
 // Retornando o nome da página:
 char* PaginaNome(Pagina *pagina)
 {
-    char* ret = (char*)malloc(strlen(pagina->nomePagina + 1));
-    free(pagina->nomePagina);
-    return ret;
+    return pagina->nomePagina;
 }
 
 // Retornando o endereço do arquivo da página:
 char* PaginaArquivo(Pagina* pagina)
 {
-    char *ret = (char *)malloc(strlen(pagina->enderecoArq + 1));
-    free(pagina->enderecoArq);
-    return ret;
+    return pagina->enderecoArq;
 }
 
 // Retorno da lista de contribuições:

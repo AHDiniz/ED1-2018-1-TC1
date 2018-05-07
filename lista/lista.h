@@ -19,6 +19,9 @@ typedef struct item Item;
 // Definindo o padrão de função que libera o conteúdo de um item:
 typedef void FreeContItem(void**);
 
+// Definindo padrão de função para impressão de conteúdo de item:
+typedef void Imprime(void*);
+
 /*
 Nova Lista:
 - Entrada: a string que indica o tipo de item que a lista comporta;
@@ -75,7 +78,7 @@ void ListaRemove(Lista* lista, const unsigned int pos, FreeContItem Func);
 
 /*
 Achar item na lista:
-- Entrada: ponteiro para a lista e poisção do item desejado;
+- Entrada: ponteiro para a lista e posição do item desejado;
 - Saída: ponteiro para o item procurado;
 - Pré-condições: lista alocada e não vazia e posição válida;
 - Pós-condições: nenhum efeito colateral;
