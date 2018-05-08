@@ -54,7 +54,7 @@ void RetiraLink(Pagina* origem, Pagina* destino)
     if (Caminho(origem, destino)) // Se existe link entre as páginas:
         for (int i = 0; i < TamanhoLista(origem->listaLinks); i++) // Varrendo cada item da lista de links
             if (strcmp(ConteudoItem(AchaItem(origem->listaLinks, i)), destino->nomePagina) == 0) // Se o item for igual ao nome da página destino...
-                ListaRemove(origem->listaLinks, i, free); // O item será removido
+                ListaRemove(origem->listaLinks, i, Freedom); // O item será removido
     else
         printf("Nao ha link entre %s e %s para ser removido.", origem->nomePagina, destino->nomePagina); // Mensagem de erro
 }
@@ -101,7 +101,9 @@ void ImprimePagina(Pagina* pagina)
     // Imprimindo os links:
     fprintf(output, "\n--> Lista de links:\n");
     for (i = 0; i < TamanhoLista(pagina->listaLinks); i++)
-        fprintf(output, "%s\n", ConteudoItem(AchaItem(pagina->listaLinks, i)));
+    {
+        fprintf(output, "%s\n", (char*) ConteudoItem(AchaItem(pagina->listaLinks, i)));
+    }
     // Imprimindo os textos:
     fprintf(output, "\n--> Textos:\n");
     for (i = 0; i < TamanhoLista(pagina->listaContrb); i++)
@@ -130,9 +132,9 @@ void InsereContribuicaoPagina(Pagina* pagina, Contribuicao* contribuicao)
 {
     // Verificando se o item já está na lista:
     for (int i = 0; i < TamanhoLista(pagina->listaContrb); i++)
-        if (ConteudoItem(AchaItem(pagina->listaContrb, i)) == contribuicao)
+        if ( (Contribuicao*) ConteudoItem(AchaItem(pagina->listaContrb, i)) == contribuicao)
             {
-                printf("A contribuicao ja esta na pagina."); // Mensagem de erro
+                printf("A contribuicao ja esta na pagina.\n"); // Mensagem de erro
                 return;
             }
     Item* contrbItem = NovoItem("Contribuicao", contribuicao); // Criando um novo item para ser inserido na lista
@@ -172,5 +174,5 @@ void DestroiPagina(void** pagina)
     free((*pag)->enderecoArq); // Liberando o espaço para o endereço da página
     DestroiLista((*pag)->listaContrb, DestroiContribuicao); // Destruindo a lista de contribuições
     DestroiLista((*pag)->listaLinks, Freedom); // Destruindo a lista de links
-    free(*pagina); // Liberando espaço reservado para a página
+    free(*pag); // Liberando espaço reservado para a página
 }
