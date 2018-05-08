@@ -24,7 +24,7 @@ int main()
 
     if(cont == NULL)
     {
-        printf("cont liberado");
+        printf("cont liberado\n");
     }
 
     return 0;

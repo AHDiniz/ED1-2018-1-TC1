@@ -22,6 +22,122 @@ struct tipoWiked
     Lista *editores;
 };
 
+/****************** AUXILIARES ******************/
+
+//Verifica se uma página já existe e retorna sua posição
+static int ProcuraPagina(Wiked* wiki,char* pagina)
+{
+    // se a lista estiver vazia retorna -1 (página não encontrada)
+    if(ListaVazia(wiki->paginas))
+    {
+        return (-1);
+    }
+
+    Pagina *p; // definindo ponteiro de busca
+
+    // para cada página na lista, verifica se seu nome eh igual ao procurado. Caso sim retorna sua posição
+    for(i = 0 ; i < TamanhoLista(wiki->paginas) ; i++)
+    {
+        p = (Pagina*) AchaItem(wiki->paginas,i); // atualizando ponteiro de busca
+
+        if(p != NULL) // medida de segurança
+        {
+            if(strcmp( PaginaNome(p),pagina) == 0) // compara nome do ponteiro de busca com nome da página
+            {
+                return i;   // retorna posição
+            }
+        }
+    }
+
+    return (-1); // caso não encontrada retorna -1
+}
+
+// Verifica se um editor já existe e retorna sua posição
+static int ProcuraEditor(Wiked* wiki, char* editor)
+{
+    // se a lista estiver vazia retorna -1 (página não encontrada)
+    if(ListaVazia(wiki->editores))
+    {
+        return (-1);
+    }
+
+    Editor *e; // definindo ponteiro de busca
+
+    // para cada página na lista, verifica se seu nome eh igual ao procurado. Caso sim retorna sua posição
+    for(i = 0 ; i < TamanhoLista(wiki->editores) ; i++)
+    {
+        e = (Editor*) AchaItem(wiki->editores,i); // atualizando ponteiro de busca
+
+        if(e != NULL) // medida de segurança
+        {
+            if(strcmp( EditorNome(e),editor) == 0) // compara nome do ponteiro de busca com nome do editor
+            {
+                return i;   // retorna a posição
+            }
+        }
+    }
+
+    return (-1); // caso não encontrada retorna -1
+}
+
+// verifica se uma contribuição ja existe e retorna sua posição
+static int ProcuraContribuicao(Pagina* pagina ,char* arquivo)
+{
+    Lista *conts = PaginaContribuicoes(pagina);
+
+    // se a lista estiver vazia retorna -1 (contribuição não encontrada)
+    if(ListaVazia(conts))
+    {
+        return (-1);
+    }
+
+    Contribuicao *c; // definindo ponteiro de busca
+
+    // para cada contribuição na lista, verifica se seu arquivo eh igual ao procurado. Caso sim retorna sua posição
+    for(i = 0 ; i < TamanhoLista(conts) ; i++)
+    {
+        c = (Contribuicao*) AchaItem(conts,i); // atualizando ponteiro de busca
+
+        if(c != NULL) // medida de segurança
+        {
+            if(strcmp( ContribuicaoArquivo(c),arquivo) == 0) // compara nome do ponteiro de busca com nome da contribuição
+            {
+                return i;   // retorna a posição
+            }
+        }
+    }
+
+    return (-1); // caso não encontrada retorna -1
+}
+
+//insere um conteudo numa lista generica
+static void Push(Lista* lista, void* conteudo, const char* tipo)
+{
+    Item *item = NovoItem(tipo,conteudo); // definindo o item
+    ListaAdd(lista,item);                 // inserindo o item
+}
+
+// verifica se a string termina em .txt
+static int VerificaTXT(char* string)
+{
+    int tamanho = strlen(string); // numero de caracteres na string
+
+    if(tamanho <= 4) // se houver 4 ou menos caracteres, .txt não eh sufixo
+    {
+        return 0; // retorno de caráter booleano
+    }
+
+    // verifica se os 4 últimos caracteres são .txt
+    if(strcmp( string + tamanho -4 ,".txt") == 0)
+    {
+        return 1; // caso sim, retorno afirmativo
+    }
+
+    return 0; // caso contrário o sufixo não eh .txt
+}
+
+/**************************************************/
+
 Wiked* InicializaWiki(void)
 {
     Wiked *wiki = (Wiked*) malloc(sizeof(Wiked)); // alocando a struct
@@ -330,118 +446,4 @@ void destroiWiked(void** wiki)
     // liberando o struct
     free(*w);
     *w = NULL; // medida de segurança
-}
-
-/****************** AUXILIARES ******************/
-
-//Verifica se uma página já existe e retorna sua posição
-static int ProcuraPagina(Wiked* wiki,char* pagina)
-{
-    // se a lista estiver vazia retorna -1 (página não encontrada)
-    if(ListaVazia(wiki->paginas))
-    {
-        return (-1);
-    }
-
-    Pagina *p; // definindo ponteiro de busca
-
-    // para cada página na lista, verifica se seu nome eh igual ao procurado. Caso sim retorna sua posição
-    for(i = 0 ; i < TamanhoLista(wiki->paginas) ; i++)
-    {
-        p = (Pagina*) AchaItem(wiki->paginas,i); // atualizando ponteiro de busca
-
-        if(p != NULL) // medida de segurança
-        {
-            if(strcmp( PaginaNome(p),pagina) == 0) // compara nome do ponteiro de busca com nome da página
-            {
-                return i;   // retorna posição
-            }
-        }
-    }
-
-    return (-1); // caso não encontrada retorna -1
-}
-
-// Verifica se um editor já existe e retorna sua posição
-static int ProcuraEditor(Wiked* wiki, char* editor)
-{
-    // se a lista estiver vazia retorna -1 (página não encontrada)
-    if(ListaVazia(wiki->editores))
-    {
-        return (-1);
-    }
-
-    Editor *e; // definindo ponteiro de busca
-
-    // para cada página na lista, verifica se seu nome eh igual ao procurado. Caso sim retorna sua posição
-    for(i = 0 ; i < TamanhoLista(wiki->editores) ; i++)
-    {
-        e = (Editor*) AchaItem(wiki->editores,i); // atualizando ponteiro de busca
-
-        if(e != NULL) // medida de segurança
-        {
-            if(strcmp( EditorNome(e),editor) == 0) // compara nome do ponteiro de busca com nome do editor
-            {
-                return i;   // retorna a posição
-            }
-        }
-    }
-
-    return (-1); // caso não encontrada retorna -1
-}
-
-// verifica se uma contribuição ja existe e retorna sua posição
-static int ProcuraContribuicao(Pagina* pagina ,char* arquivo)
-{
-    Lista *conts = PaginaContribuicoes(pagina);
-
-    // se a lista estiver vazia retorna -1 (contribuição não encontrada)
-    if(ListaVazia(conts))
-    {
-        return (-1);
-    }
-
-    Contribuicao *c; // definindo ponteiro de busca
-
-    // para cada contribuição na lista, verifica se seu arquivo eh igual ao procurado. Caso sim retorna sua posição
-    for(i = 0 ; i < TamanhoLista(conts) ; i++)
-    {
-        c = (Contribuicao*) AchaItem(conts,i); // atualizando ponteiro de busca
-
-        if(c != NULL) // medida de segurança
-        {
-            if(strcmp( ContribuicaoArquivo(c),arquivo) == 0) // compara nome do ponteiro de busca com nome da contribuição
-            {
-                return i;   // retorna a posição
-            }
-        }
-    }
-
-    return (-1); // caso não encontrada retorna -1
-}
-
-//insere um conteudo numa lista generica
-static void Push(Lista* lista, void* conteudo, const char* tipo)
-{
-    Item *item = NovoItem(tipo,conteudo); // definindo o item
-    ListaAdd(lista,item);                 // inserindo o item
-}
-
-// verifica se a string termina em .txt
-static int VerificaTXT(char* string)
-{
-    int tamanho = strlen(string); // numero de caracteres na string
-
-    if(tamanho <= 4) // se houver 4 ou menos caracteres, .txt não eh sufixo
-    {
-        return 0; // retorno de caráter booleano
-    }
-
-    // verifica se os 4 últimos caracteres são .txt
-    if(strcmp( string + tamanho -4 ,".txt") == 0)
-    {
-        return 1; // caso sim, retorno afirmativo
-    }
-
-    return 0; // caso contrário o sufixo não eh .txt
 }

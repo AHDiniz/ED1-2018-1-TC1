@@ -13,7 +13,7 @@ int main()
     Contribuicao *cont3 = InicializaContribuicao("pag","editor","cont3.txt");
 
     int tam = TamanhoLista( EditorContribuicoes(editor) );
-    printf("Editor = %s\nContribuicoes:\n");
+    printf("Editor = %s\nContribuicoes:\n", EditorNome(editor));
     ImprimeConts(editor,tam);
 
     InsereContribuicaoEditor(editor,cont1);
@@ -21,7 +21,7 @@ int main()
     InsereContribuicaoEditor(editor,cont3);
 
     tam = TamanhoLista( EditorContribuicoes(editor) );
-    printf("Editor = %s\nContribuicoes:\n");
+    printf("Editor = %s\nContribuicoes:\n", EditorNome(editor));
     ImprimeConts(editor,tam);
 
     DestroiEditor((void**) &editor);

@@ -17,6 +17,12 @@ struct tipoPagina
     Lista* listaLinks; // Lista de links para outras páginas
 };
 
+// Auxiliar:
+static void Freedom(void** c)
+{
+    free(*c);
+}
+
 // Criando uma nova página:
 Pagina* InicializaPagina(const char* pagina, const char* arquivo)
 {
@@ -67,30 +73,54 @@ int Caminho(Pagina *origem, Pagina *destino)
 void ImprimePagina(Pagina* pagina)
 {
     FILE* output; // Arquivo de sáida
+    FILE* contArq; // Arquivo auxiliar
+    int chr; // Variável auxiliar de impressão
     int i; // Variável de incrementação
+    Contribuicao *cont; // Variável auxiliar
     output = fopen(pagina->enderecoArq, "w"); // Abrindo o arquivo
     if (!output)
     {
         printf("Arquivo nao encontrado.\n"); // Mensagem de erro
         return;
     }
-    fprintf(output, "Pagina %s\n", pagina->nomePagina); // Imprimindo o nome da página
-    // Imprimindo as contribuições:
-    fprintf(output, "Lista de Contribuicoes: ");
+    fprintf(output, "%s\n", pagina->nomePagina); // Imprimindo o nome da página
+    // Imprimindo o hístorico de contribuições:
+    fprintf(output, "\n--> Historico de Contribuicoes:\n");
     for (i = 0; i < TamanhoLista(pagina->listaContrb); i++)
-        if (ContribuicaoEstado(ConteudoItem(AchaItem(pagina->listaContrb, i))))
-            fprintf(output, "%s, ", ContribuicaoEditor(ConteudoItem(AchaItem(pagina->listaContrb, i))));
+    {
+        cont = (Contribuicao*) ConteudoItem(AchaItem(pagina->listaContrb, i));
+        if (ContribuicaoEstado(cont))
+        {
+            fprintf(output, "%s %s\n", ContribuicaoEditor(cont), ContribuicaoArquivo(cont));
+        }
         else
-            fprintf(output, "%s(retirada), ", ContribuicaoEditor(ConteudoItem(AchaItem(pagina->listaContrb, i))));
+        {
+            fprintf(output, "%s %s (retirada)\n", ContribuicaoEditor(cont), ContribuicaoArquivo(cont));
+        }
+    }
     // Imprimindo os links:
-    fprintf(output, "\nLista de links: ");
+    fprintf(output, "\n--> Lista de links:\n");
     for (i = 0; i < TamanhoLista(pagina->listaLinks); i++)
-        fprintf(output, "%s, ", ConteudoItem(AchaItem(pagina->listaLinks, i)));
+        fprintf(output, "%s\n", ConteudoItem(AchaItem(pagina->listaLinks, i)));
     // Imprimindo os textos:
-    fprintf(output, "\nTextos:");
+    fprintf(output, "\n--> Textos:\n");
     for (i = 0; i < TamanhoLista(pagina->listaContrb); i++)
-        if (ContribuicaoEstado(ConteudoItem(AchaItem(pagina->listaContrb, i))))
-            fprintf(output, "%s, ", ContribuicaoPagina(ConteudoItem(AchaItem(pagina->listaContrb, i))));
+    {
+        cont = (Contribuicao*) ConteudoItem(AchaItem(pagina->listaContrb, i));
+        if (ContribuicaoEstado(cont))
+        {
+            contArq = fopen(ContribuicaoArquivo(cont), "r");
+            fprintf(output, "\n-------- %s (%s) --------\n\n", ContribuicaoArquivo(cont), ContribuicaoEditor(cont));
+
+            while(!feof(contArq))
+            {
+                chr = getc(contArq);
+                fputc(chr, output);
+            }
+
+            fclose(contArq);
+        }
+    }
     if (fclose(output) != 0)
         printf("Nao foi possivel fechar o arquivo texto.\n"); // Mensagem de erro
 }
@@ -134,11 +164,13 @@ Lista *ListaLinksPagina(Pagina *pagina)
 }
 
 // Destruindo a página:
-void DestroiPagina(Pagina* pagina)
+void DestroiPagina(void** pagina)
 {
-    free(pagina->nomePagina); // Liberando o espaço para o nome da página
-    free(pagina->enderecoArq); // Liberando o espaço para o endereço da página
-    DestroiLista(pagina->listaContrb, DestroiContribuicao); // Destruindo a lista de contribuições
-    DestroiLista(pagina->listaLinks, free); // Destruindo a lista de links
-    free(pagina); // Liberando espaço reservado para a página
+    Pagina **pag = (Pagina**) pagina;
+
+    free((*pag)->nomePagina); // Liberando o espaço para o nome da página
+    free((*pag)->enderecoArq); // Liberando o espaço para o endereço da página
+    DestroiLista((*pag)->listaContrb, DestroiContribuicao); // Destruindo a lista de contribuições
+    DestroiLista((*pag)->listaLinks, Freedom); // Destruindo a lista de links
+    free(*pagina); // Liberando espaço reservado para a página
 }
