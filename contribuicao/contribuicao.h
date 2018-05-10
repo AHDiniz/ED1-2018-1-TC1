@@ -67,7 +67,7 @@ char* ContribuicaoPagina(Contribuicao* contribuicao);
 int ContribuicaoEstado(Contribuicao* contribuicao);
 
 /*Libera toda memória alocada em um editor
-* inputs: endereço de um ponteiro genérico para contribuição
+* inputs: um ponteiro genérico para contribuição
 * outputs: nenhum
 * pre-condição: contribuição não nula
 * pos-condição: toda memória liberada

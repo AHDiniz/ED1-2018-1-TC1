@@ -52,7 +52,7 @@ char* EditorNome(Editor* editor);
 Lista* EditorContribuicoes(Editor* editor);
 
 /*Libera toda memória alocada em um editor
-* inputs: endereço de ponteiro genérico para editor
+* inputs: ponteiro genérico para editor
 * outputs: nenhum
 * pre-condição: editor não nulo
 * pos-condição: toda memória liberada

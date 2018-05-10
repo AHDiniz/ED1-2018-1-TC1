@@ -80,10 +80,40 @@ static int ProcuraEditor(Wiked* wiki, char* editor)
     return (-1); // caso não encontrada retorna -1
 }
 
-// verifica se uma contribuição ja existe e retorna sua posição
-static int ProcuraContribuicao(Pagina* pagina ,char* arquivo)
+// verifica se uma contribuição ja existe numa página e retorna sua posição
+static int ProcuraContribuicaoPagina(Pagina* pagina ,char* arquivo)
 {
     Lista *conts = PaginaContribuicoes(pagina);
+
+    // se a lista estiver vazia retorna -1 (contribuição não encontrada)
+    if(ListaVazia(conts))
+    {
+        return (-1);
+    }
+
+    Contribuicao *c; // definindo ponteiro de busca
+
+    // para cada contribuição na lista, verifica se seu arquivo eh igual ao procurado. Caso sim retorna sua posição
+    for(i = 0 ; i < TamanhoLista(conts) ; i++)
+    {
+        c = (Contribuicao*) AchaItem(conts,i); // atualizando ponteiro de busca
+
+        if(c != NULL) // medida de segurança
+        {
+            if(strcmp( ContribuicaoArquivo(c),arquivo) == 0) // compara nome do ponteiro de busca com nome da contribuição
+            {
+                return i;   // retorna a posição
+            }
+        }
+    }
+
+    return (-1); // caso não encontrada retorna -1
+}
+
+// verifica se uma contribuição ja existe numa página e retorna sua posição
+static int ProcuraContribuicaoEditor(Editor* editor ,char* arquivo)
+{
+    Lista *conts = EditorContribuicoes(editor);
 
     // se a lista estiver vazia retorna -1 (contribuição não encontrada)
     if(ListaVazia(conts))
@@ -176,6 +206,19 @@ void RetiraPaginaWiki(Wiked* wiki, char* pagina)
         return;
     }
 
+    Pagina *aux; // auxiliar de busca
+    Pagina *pag = (Pagina*) AchaItem(wiki->paginas,posicao); // página que sera retirada
+
+    // removendo os links que levem à página
+    for(i = 0 ; i < TamanhoLista(wiki->paginas) ; i++)
+    {
+        aux = (Pagina*) AchaItem(wiki->paginas, i);
+        if(Caminho(aux,pag))
+        {
+            RetiraLink(aux,pag);
+        }
+    }
+
     ListaRemove(wiki->paginas,posicao,DestroiPagina); // caso seja encontrada remove a página
 }
 
@@ -237,14 +280,32 @@ void InsereContribuicaoWiki(Wiked* wiki, char* pagina, char* editor, char* arqui
         return;    // e a função sera abortada
     }
 
+    // buscando página e editor
+    Pagina *pag = (Pagina*) AchaItem(wiki->paginas,posicaoPag);
+    Editor *ed =  (Editor*) AchaItem(wiki->editores,posicaoEd);
+
+    // verifica se a contribuição já pertence à página
+    if(ProcuraContribuicaoPagina(pag,arquivo) == -1)
+    {
+        ErroContExiste(arquivo);
+        return;
+    }
+
+    // verifica se a contribuição já pertence ao editor
+    if(ProcuraContribuicaoEditor(ed,arquivo) == -1)
+    {
+        ErroContExiste(arquivo);
+        return;
+    }
+
     // inicializando a contribuição
     Contribuicao *cont = InicializaContribuicao(pagina,editor,arquivo);
 
     // inserindo a contribuição na página
-    InsereContribuicaoPagina( (Pagina*) AchaItem(wiki->paginas,posicaoPag) , cont );
+    InsereContribuicaoPagina(pag,cont);
 
     // inserindo contribuição no editor
-    InsereContribuicaoEditor( (Editor*) AchaItem(wiki->editores,posicaoEd) , cont );
+    InsereContribuicaoEditor(ed,cont);
 }
 
 void RetiraContribuicaoWiki(Wiked* wiki, char* pagina, char* editor, char* arquivo)
@@ -278,7 +339,7 @@ void RetiraContribuicaoWiki(Wiked* wiki, char* pagina, char* editor, char* arqui
     Pagina *pag = (Pagina*) AchaItem(wiki->paginas,posicaoPag);
 
     // buscando a posição da contribuição
-    int posicaoCont = ProcuraContribuicao(pag,arquivo);
+    int posicaoCont = ProcuraContribuicaoPagina(pag,arquivo);
 
     // verifica se existe a contribuição na página fornecida
     if(posicaoCont == -1)
@@ -434,16 +495,15 @@ void ImprimeWiked(Wiked* wiki)
     }
 }
 
-void destroiWiked(void** wiki)
+void destroiWiked(void* wiki)
 {
     // convertendo para tipo Wiked
-    Wiked **w = (Wiked**) wiki;
+    Wiked *w = (Wiked*) wiki;
 
     // liberando as listas
-    DestroiLista((*w)->paginas,DestroiPagina);
-    DestroiLista((*w)->editores,DestroiEditor);
+    DestroiLista(w->paginas,DestroiPagina);
+    DestroiLista(w->editores,DestroiEditor);
 
     // liberando o struct
-    free(*w);
-    *w = NULL; // medida de segurança
+    free(w);
 }

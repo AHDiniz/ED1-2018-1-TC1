@@ -113,11 +113,11 @@ void ImprimePaginaWiki(Wiked* wiki, char* pagina);
 void ImprimeWiked(Wiked* wiki);
 
 /*Libera toda memoria alocada na WIKED!
-* inputs: endereço de ponteiro genérico para a wiki
+* inputs: ponteiro genérico para a wiki
 * outputs: nenhum
 * pre-condição: wiki não nula
 * pos-condição: toda memória liberada
 */
-void destroiWiked(void** wiki);
+void destroiWiked(void* wiki);
 
 #endif
