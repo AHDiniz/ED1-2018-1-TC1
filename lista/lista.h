@@ -17,7 +17,7 @@ typedef struct lista Lista;
 typedef struct item Item;
 
 // Definindo o padrão de função que libera o conteúdo de um item:
-typedef void FreeContItem(void**);
+typedef void FreeContItem(void*);
 
 // Definindo padrão de função para impressão de conteúdo de item:
 typedef void Imprime(void*);

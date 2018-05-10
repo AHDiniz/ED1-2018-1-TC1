@@ -201,17 +201,10 @@ int LiberaItem(Item* item, FreeContItem Func)
         printf("O item nao possui conteudo.\n");
         return 0;
     }
-    if(Func == NULL) // Checando se o ponteiro para a função existe
+    if(Func != NULL) // Checando se o ponteiro para a função existe
     {
-        printf("A funcao de entrada nao existe.\n");
-        return 0;
+        Func(item->conteudo); // Liberando o conteúdo do item
     }
-    if (*Func == NULL) // Checando se a função de entrada existe
-    {
-        printf("A funcao de entrada nao existe.\n");
-        return 0;
-    }
-    Func(&(item->conteudo)); // Liberando o conteúdo do item
     free(item->tipo); // Liberando a tag de tipo do item
     free(item); // Liberando o item
     return 1;

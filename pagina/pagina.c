@@ -21,6 +21,7 @@ struct tipoPagina
 static void Freedom(void** c)
 {
     free(*c);
+    *c = NULL;
 }
 
 // Criando uma nova página:
@@ -132,7 +133,7 @@ void InsereContribuicaoPagina(Pagina* pagina, Contribuicao* contribuicao)
 {
     // Verificando se o item já está na lista:
     for (int i = 0; i < TamanhoLista(pagina->listaContrb); i++)
-        if ( (Contribuicao*) ConteudoItem(AchaItem(pagina->listaContrb, i)) == contribuicao)
+        if ( !strcmp(ContribuicaoArquivo( (Contribuicao*) ConteudoItem(AchaItem(pagina->listaContrb, i))), ContribuicaoArquivo(contribuicao)))
             {
                 printf("A contribuicao ja esta na pagina.\n"); // Mensagem de erro
                 return;
@@ -166,13 +167,13 @@ Lista *ListaLinksPagina(Pagina *pagina)
 }
 
 // Destruindo a página:
-void DestroiPagina(void** pagina)
+void DestroiPagina(void* pagina)
 {
-    Pagina **pag = (Pagina**) pagina;
+    Pagina *pag = (Pagina*) pagina;
 
-    free((*pag)->nomePagina); // Liberando o espaço para o nome da página
-    free((*pag)->enderecoArq); // Liberando o espaço para o endereço da página
-    DestroiLista((*pag)->listaContrb, DestroiContribuicao); // Destruindo a lista de contribuições
-    DestroiLista((*pag)->listaLinks, Freedom); // Destruindo a lista de links
-    free(*pag); // Liberando espaço reservado para a página
+    free(pag->nomePagina); // Liberando o espaço para o nome da página
+    free(pag->enderecoArq); // Liberando o espaço para o endereço da página
+    DestroiLista(pag->listaContrb, DestroiContribuicao); // Destruindo a lista de contribuições
+    DestroiLista(pag->listaLinks, Freedom); // Destruindo a lista de links
+    free(pag); // Liberando espaço reservado para a página
 }

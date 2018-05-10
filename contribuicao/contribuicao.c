@@ -68,33 +68,32 @@ int ContribuicaoEstado(Contribuicao* contribuicao)
     return contribuicao->estado;
 }
 
-void DestroiContribuicao(void** contribuicao)
+void DestroiContribuicao(void* contribuicao)
 {
     // caso esteja vazio aborta-se a função
-    if(*contribuicao == NULL)
+    if(contribuicao == NULL)
     {
         return;
     }
 
     // convertendo para Contrbuicao*
-    Contribuicao **c = (Contribuicao**) contribuicao;
+    Contribuicao *c = (Contribuicao*) contribuicao;
 
     // Liberando as strings
-    free((*c)->arquivo); // liberando arquivo
+    free(c->arquivo); // liberando arquivo
 
-    if((*c)->editor != NULL) // verificando se a string já não foi removida (pertençe somente ao histórico)
+    if(c->editor != NULL) // verificando se a string já não foi removida (pertençe somente ao histórico)
     {
-        free((*c)->editor); // liberando editor
-        (*c)->editor = NULL; // medida de sugurança
+        free(c->editor); // liberando editor
+        c->editor = NULL; // medida de sugurança
     }
 
-    if((*c)->pagina != NULL) // verificando se a string já não foi removida (pertençe somente ao histórico)
+    if(c->pagina != NULL) // verificando se a string já não foi removida (pertençe somente ao histórico)
     {
-        free((*c)->pagina); // liberando pagina
-        (*c)->pagina = NULL; // medida de sugurança
+        free(c->pagina); // liberando pagina
+        c->pagina = NULL; // medida de sugurança
     }
 
     // Liberando a contribuição
-    free(*c);
-    *c = NULL;
+    free(c);
 }

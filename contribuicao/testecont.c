@@ -9,6 +9,7 @@ int main()
     char *arquivo = "arquivo.txt";
 
     Contribuicao *cont = InicializaContribuicao(pagina,editor,arquivo);
+    Contribuicao *teste = cont;
 
     char *pag = ContribuicaoPagina(cont);
     char *ed = ContribuicaoEditor(cont);
@@ -20,11 +21,16 @@ int main()
 
     printf("Imprimindo contribuicao:\nPagina: NULL\nEditor: NULL\nArquivo: %s\nEstado: %d\n\n", arq, ContribuicaoEstado(cont));
 
-    DestroiContribuicao((void**) &cont);
+    DestroiContribuicao(cont);
 
-    if(cont == NULL)
+    if(!cont)
     {
         printf("cont liberado\n");
+    }
+
+    if(!teste)
+    {
+        printf("teste liberado\n");
     }
 
     return 0;

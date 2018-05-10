@@ -44,20 +44,19 @@ Lista* EditorContribuicoes(Editor* editor)
     return editor->contribuicoes;
 }
 
-void DestroiEditor(void** editor)
+void DestroiEditor(void* editor)
 {
     // caso esteja vazio aborta-se a função
-    if(*editor == NULL)
+    if(editor == NULL)
     {
         return;
     }
 
-    Editor **e = (Editor**) editor; // convertendo para tipo Editor
+    Editor *e = (Editor*) editor; // convertendo para tipo Editor
 
-    free((*e)->nome); // liberando o nome
+    free(e->nome); // liberando o nome
 
-    DestroiLista((*e)->contribuicoes, DestroiContribuicao); // liberando a lista
+    DestroiLista(e->contribuicoes, DestroiContribuicao); // liberando a lista
 
-    free(*e); // liberando o struct
-    *e = NULL; // medida de segurança
+    free(e); // liberando o struct
 }

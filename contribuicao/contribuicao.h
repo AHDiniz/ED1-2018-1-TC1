@@ -72,6 +72,6 @@ int ContribuicaoEstado(Contribuicao* contribuicao);
 * pre-condição: contribuição não nula
 * pos-condição: toda memória liberada
 */
-void DestroiContribuicao(void** contribuicao);
+void DestroiContribuicao(void* contribuicao);
 
 #endif

@@ -113,6 +113,6 @@ Lista* ListaLinksPagina(Pagina *pagina);
 * pre-condição: página não nula
 * pos-condição: página vazia e toda memória liberada
 */
-void DestroiPagina(void** pagina);
+void DestroiPagina(void* pagina);
 
 #endif

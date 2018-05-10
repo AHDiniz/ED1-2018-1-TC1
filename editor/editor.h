@@ -57,6 +57,6 @@ Lista* EditorContribuicoes(Editor* editor);
 * pre-condição: editor não nulo
 * pos-condição: toda memória liberada
 */
-void DestroiEditor(void** editor);
+void DestroiEditor(void* editor);
 
 #endif

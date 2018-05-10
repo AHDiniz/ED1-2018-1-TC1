@@ -36,8 +36,8 @@ int main(void)
     //ImprimePagina(pagina1);
     //ImprimePagina(pagina2);
 
-    DestroiPagina((void**) &pagina1);
-    DestroiPagina((void**) &pagina2);
+    DestroiPagina(pagina1);
+    DestroiPagina(pagina2);
 
     return 0;
 }
