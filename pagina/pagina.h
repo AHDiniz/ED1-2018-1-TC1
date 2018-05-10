@@ -108,7 +108,7 @@ Retorno da lista de links:
 Lista* ListaLinksPagina(Pagina *pagina);
 
 /*Libera toda memória alocada em uma pagina
-* inputs: ponteiro genérico para página
+* inputs: endereço de ponteiro genérico para página
 * outputs: nenhum
 * pre-condição: página não nula
 * pos-condição: página vazia e toda memória liberada

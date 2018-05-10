@@ -33,7 +33,7 @@ Pagina* InicializaPagina(const char* pagina, const char* arquivo)
     p->enderecoArq = (char *)malloc(strlen(arquivo) + 1); // Alocando espaço para o endereço do arquivo da página
     strcpy(p->enderecoArq, arquivo); // Dando um valor para o endereço do arquivo da página
     p->listaContrb = NovaLista("Contribuicao"); // Criando uma nova lista de contribuições
-    p->listaLinks = NovaLista("char*"); // Criando uma nova lista de strings (que representam os links para outras páginas)
+    p->listaLinks = NovaLista("Pagina"); // Criando uma nova lista de strings (que representam os links para outras páginas)
     return p;
 }
 
@@ -42,7 +42,7 @@ void InsereLink(Pagina* origem, Pagina* destino)
 {
     if (!Caminho(origem, destino)) // O item será adicionado se ele ainda não estivar na lista
     {
-        Item* linkItem = NovoItem("char*", destino->nomePagina); // Criando um novo item para a lista
+        Item* linkItem = NovoItem("Pagina", destino); // Criando um novo item para a lista
         ListaAdd(origem->listaLinks, linkItem); // Adicionando o link na lista
     }
     else
@@ -54,7 +54,7 @@ void RetiraLink(Pagina* origem, Pagina* destino)
 {
     if (Caminho(origem, destino)) // Se existe link entre as páginas:
         for (int i = 0; i < TamanhoLista(origem->listaLinks); i++) // Varrendo cada item da lista de links
-            if (strcmp(ConteudoItem(AchaItem(origem->listaLinks, i)), destino->nomePagina) == 0) // Se o item for igual ao nome da página destino...
+            if (ConteudoItem(AchaItem(origem->listaLinks, i)) == destino) // Se o item for igual ao nome da página destino...
                 ListaRemove(origem->listaLinks, i, Freedom); // O item será removido
     else
         printf("Nao ha link entre %s e %s para ser removido.", origem->nomePagina, destino->nomePagina); // Mensagem de erro
@@ -65,7 +65,7 @@ int Caminho(Pagina *origem, Pagina *destino)
 {
     int i; // Variável de incrementação
     for (i = 0; i < TamanhoLista(origem->listaLinks); i++) // Loop para comparar cada item da lista de links com o nome da outra página
-        if (strcmp(ConteudoItem(AchaItem(origem->listaLinks, i)), destino->nomePagina) == 0) // Comparando o nome da página com o conteúdo do item
+        if (ConteudoItem(AchaItem(origem->listaLinks, i)) == destino) // Comparando o nome da página com o conteúdo do item
             return 1; // Se o nome da página de destino estiver na lista, então há um caminho (TRUE)
     return 0; // Caso o nome da página do destino não esteja na lista, não há caminho (FALSE)
 }
@@ -77,7 +77,7 @@ void ImprimePagina(Pagina* pagina)
     FILE* contArq; // Arquivo auxiliar
     int chr; // Variável auxiliar de impressão
     int i; // Variável de incrementação
-    Contribuicao *cont; // Variável auxiliar
+    Contribuicao* cont; // Variável auxiliar
     output = fopen(pagina->enderecoArq, "w"); // Abrindo o arquivo
     if (!output)
     {
@@ -103,7 +103,7 @@ void ImprimePagina(Pagina* pagina)
     fprintf(output, "\n--> Lista de links:\n");
     for (i = 0; i < TamanhoLista(pagina->listaLinks); i++)
     {
-        fprintf(output, "%s\n", (char*) ConteudoItem(AchaItem(pagina->listaLinks, i)));
+        fprintf(output, "%s\n", PaginaNome(ConteudoItem(AchaItem(pagina->listaLinks, i))));
     }
     // Imprimindo os textos:
     fprintf(output, "\n--> Textos:\n");
