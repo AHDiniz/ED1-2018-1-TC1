@@ -179,7 +179,7 @@ Wiked* InicializaWiki(void)
     return wiki;
 }
 
-void InserePaginaWiki(Wiked* wiki, char* pagina, char* arquivo)
+void Wiki_InserePagina(Wiked* wiki, char* pagina, char* arquivo)
 {
     if(ProcuraPagina(wiki,pagina) >= -1) // verifica se ja existe uma página com esse nome ou se a lista é nula
     {
@@ -195,7 +195,7 @@ void InserePaginaWiki(Wiked* wiki, char* pagina, char* arquivo)
     Push(wiki->paginas,p,"Pagina");
 }
 
-void RetiraPaginaWiki(Wiked* wiki, char* pagina)
+void Wiki_RetiraPagina(Wiked* wiki, char* pagina)
 {
     int posicao = ProcuraPagina(wiki,pagina); // encontra a posição da página ou -1 caso não exista
 
@@ -237,7 +237,7 @@ void RetiraPaginaWiki(Wiked* wiki, char* pagina)
     ListaRemove(wiki->paginas,posicao,DestroiPagina); // remove a página, liberando todas as suas contribuições
 }
 
-void InsereEditorWiki(Wiked* wiki, char* editor)
+void Wiki_InsereEditor(Wiked* wiki, char* editor)
 {
     // verifica e já existe um editor com esse nome
     if(ProcuraEditor(wiki,editor) >= -1)
@@ -254,7 +254,7 @@ void InsereEditorWiki(Wiked* wiki, char* editor)
     Push(wiki->editores,e,"Editor");
 }
 
-void RetiraEditorWiki(Wiked* wiki, char* editor)
+void Wiki_RetiraEditor(Wiked* wiki, char* editor)
 {
     int posicao = ProcuraEditor(wiki,editor); // encontra a posição do editor ou -1 caso não exista
 
@@ -283,7 +283,7 @@ void RetiraEditorWiki(Wiked* wiki, char* editor)
     ListaRemove(wiki->editores,posicao,DestroiEditor); // remove o editor, liberando todas as suas contribuições
 }
 
-void InsereContribuicaoWiki(Wiked* wiki, char* pagina, char* editor, char* arquivo)
+void Wiki_InsereContribuicao(Wiked* wiki, char* pagina, char* editor, char* arquivo)
 {
     // buscando as posições da página e do editor
     int posicaoPag = ProcuraPagina(wiki,pagina);
@@ -338,7 +338,7 @@ void InsereContribuicaoWiki(Wiked* wiki, char* pagina, char* editor, char* arqui
     InsereContribuicaoEditor(ed,cont);
 }
 
-void RetiraContribuicaoWiki(Wiked* wiki, char* pagina, char* editor, char* arquivo)
+void Wiki_RetiraContribuicao(Wiked* wiki, char* pagina, char* editor, char* arquivo)
 {
     // buscando as posições da página e do editor
     int posicaoPag = ProcuraPagina(wiki,pagina);
@@ -392,7 +392,7 @@ void RetiraContribuicaoWiki(Wiked* wiki, char* pagina, char* editor, char* arqui
     RetiraContribuicao(cont);
 }
 
-void InsereLinkWiki(Wiked* wiki, char* origem, char* destino)
+void Wiki_InsereLink(Wiked* wiki, char* origem, char* destino)
 {
     // buscando as posições da página origem e destino
     int posicaoOrigem = ProcuraPagina(wiki,origem);
@@ -427,7 +427,7 @@ void InsereLinkWiki(Wiked* wiki, char* origem, char* destino)
     InsereLink(o,d);
 }
 
-void RetiraLinkWiki(Wiked* wiki, char* origem, char* destino)
+void Wiki_RetiraLink(Wiked* wiki, char* origem, char* destino)
 {
     // buscando as posições da página origem e destino
     int posicaoOrigem = ProcuraPagina(wiki,origem);
@@ -462,7 +462,7 @@ void RetiraLinkWiki(Wiked* wiki, char* origem, char* destino)
     RetiraLink(o,d);
 }
 
-void CaminhoWiki(Wiked* wiki, char* origem, char* destino)
+void Wiki_Caminho(Wiked* wiki, char* origem, char* destino)
 {
     // buscando as posições da página origem e destino
     int posicaoOrigem = ProcuraPagina(wiki,origem);
@@ -490,7 +490,7 @@ void CaminhoWiki(Wiked* wiki, char* origem, char* destino)
     CaminhoResposta( Caminho(o,d), origem, destino);
 }
 
-void ImprimePaginaWiki(Wiked* wiki, char* pagina)
+void Wiki_ImprimePagina(Wiked* wiki, char* pagina)
 {
     // buscando a posição da página
     int posicao = ProcuraPagina(wiki,pagina);
