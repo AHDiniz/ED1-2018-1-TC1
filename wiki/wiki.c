@@ -83,7 +83,7 @@ static int ProcuraEditor(Wiked* wiki, char* editor)
 // verifica se uma contribuição ja existe numa página e retorna sua posição
 static int ProcuraContribuicaoPagina(Pagina* pagina ,char* arquivo)
 {
-    Lista *conts = PaginaContribuicoes(pagina);
+    Lista *conts = ListaContrbPagina(pagina);
 
     // se a lista estiver vazia retorna -1 (contribuição não encontrada)
     if(ListaVazia(conts))
@@ -110,7 +110,7 @@ static int ProcuraContribuicaoPagina(Pagina* pagina ,char* arquivo)
     return (-1); // caso não encontrada retorna -1
 }
 
-// verifica se uma contribuição ja existe numa página e retorna sua posição
+// verifica se uma contribuição ja existe num editor e retorna sua posição
 static int ProcuraContribuicaoEditor(Editor* editor ,char* arquivo)
 {
     Lista *conts = EditorContribuicoes(editor);
@@ -219,7 +219,22 @@ void RetiraPaginaWiki(Wiked* wiki, char* pagina)
         }
     }
 
-    ListaRemove(wiki->paginas,posicao,DestroiPagina); // caso seja encontrada remove a página
+    // removendo as contribuições da página de seus respectivos editores
+    Lista *listaCont = ListaContrbPagina(pag); // buscando a lista de contribuições da página
+    char *nomeCont; // auxiliar que guarda o nome do arquivo da contribuição
+    char *nomeEdit; // auxiliar que guarda o nome do editor da contribuição
+    Editor *editor; // auxiliar que guarda o editor da contribuição
+
+    for(i = 0 ; i < TamanhoLista(listaCont) ; i++) // para cada contribuição na lista
+    {
+        nomeCont = ContribuicaoArquivo( (Contribuicao*) AchaItem(listaCont, i)); // busca o nome de seu arquivo
+        nomeEdit = ContribuicaoEditor( (Contribuicao*) AchaItem(listaCont, i)); // busca o nome de seu editor
+        editor = (Editor*) AchaItem(wiki->editores, ProcuraEditor(wiki, nomeEdit)); // busca o editor com o nome encontrado
+
+        ListaRemove(EditorContribuicoes(editor), ProcuraContribuicaoEditor(editor, nomeCont), NULL); // remove da lista de contribuições do editor o Item da contribuição (sem libera-la)
+    }
+
+    ListaRemove(wiki->paginas,posicao,DestroiPagina); // remove a página, liberando todas as suas contribuições
 }
 
 void InsereEditorWiki(Wiked* wiki, char* editor)
@@ -250,7 +265,22 @@ void RetiraEditorWiki(Wiked* wiki, char* editor)
         return;
     }
 
-    ListaRemove(wiki->editores,posicao,DestroiEditor); // caso seja encontrado remove o editor
+    // removendo as contribuições do editor de suas respectivas páginas
+    Lista *listaCont = EditorContribuicoes((Editor*) AchaItem(wiki->editores,posicao)); // buscando a lista de contribuições do editor
+    char *nomeCont; // auxiliar que guarda o nome do arquivo da contribuição
+    char *nomePag; // auxiliar que guarda o nome da página da contribuição
+    Pagina *pagina; // auxiliar que guarda a página da contribuição
+
+    for(i = 0 ; i < TamanhoLista(listaCont) ; i++) // para cada contribuição na lista
+    {
+        nomeCont = ContribuicaoArquivo( (Contribuicao*) AchaItem(listaCont, i)); // busca o nome de seu arquivo
+        nomePag = ContribuicaoPagina( (Contribuicao*) AchaItem(listaCont, i)); // busca o nome de sua página
+        pagina = (Pagina*) AchaItem(wiki->paginas, ProcuraPagina(wiki, nomePag)); // busca a página com o nome encontrado
+
+        ListaRemove(ListaContrbPagina(pagina), ProcuraContribuicaoPagina(pagina, nomeCont), NULL); // remove da lista de contribuições da página o Item da contribuição (sem libera-la)
+    }
+
+    ListaRemove(wiki->editores,posicao,DestroiEditor); // remove o editor, liberando todas as suas contribuições
 }
 
 void InsereContribuicaoWiki(Wiked* wiki, char* pagina, char* editor, char* arquivo)
@@ -502,7 +532,7 @@ void destroiWiked(void* wiki)
 
     // liberando as listas
     DestroiLista(w->paginas,DestroiPagina);
-    DestroiLista(w->editores,DestroiEditor);
+    DestroiLista(w->editores,DestroiEditor2);
 
     // liberando o struct
     free(w);

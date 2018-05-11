@@ -59,4 +59,12 @@ Lista* EditorContribuicoes(Editor* editor);
 */
 void DestroiEditor(void* editor);
 
+/*Libera toda memória alocada em um editor sem liberar suas contribuições
+* inputs: ponteiro genérico para editor
+* outputs: nenhum
+* pre-condição: editor não nulo
+* pos-condição: toda memória liberada
+*/
+void DestroiEditor2(void* editor);
+
 #endif

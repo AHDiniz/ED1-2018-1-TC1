@@ -24,7 +24,7 @@ int main()
     printf("Editor = %s\nContribuicoes:\n", EditorNome(editor));
     ImprimeConts(editor,tam);
 
-    DestroiEditor((void**) &editor);
+    DestroiEditor(editor);
 
     return 0;
 }

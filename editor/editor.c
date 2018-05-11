@@ -60,3 +60,20 @@ void DestroiEditor(void* editor)
 
     free(e); // liberando o struct
 }
+
+void DestroiEditor2(void* editor)
+{
+    // caso esteja vazio aborta-se a função
+    if(editor == NULL)
+    {
+        return;
+    }
+
+    Editor *e = (Editor*) editor; // convertendo para tipo Editor
+
+    free(e->nome); // liberando o nome
+
+    DestroiLista(e->contribuicoes, NULL); // liberando a lista, sem liberar suas contribuições
+
+    free(e); // liberando o struct
+}

@@ -17,13 +17,6 @@ struct tipoPagina
     Lista* listaLinks; // Lista de links para outras páginas
 };
 
-// Auxiliar:
-static void Freedom(void** c)
-{
-    free(*c);
-    *c = NULL;
-}
-
 // Criando uma nova página:
 Pagina* InicializaPagina(const char* pagina, const char* arquivo)
 {
@@ -55,7 +48,7 @@ void RetiraLink(Pagina* origem, Pagina* destino)
     if (Caminho(origem, destino)) // Se existe link entre as páginas:
         for (int i = 0; i < TamanhoLista(origem->listaLinks); i++) // Varrendo cada item da lista de links
             if (ConteudoItem(AchaItem(origem->listaLinks, i)) == destino) // Se o item for igual ao nome da página destino...
-                ListaRemove(origem->listaLinks, i, Freedom); // O item será removido
+                ListaRemove(origem->listaLinks, i, free); // O item será removido
     else
         printf("Nao ha link entre %s e %s para ser removido.", origem->nomePagina, destino->nomePagina); // Mensagem de erro
 }
@@ -174,6 +167,6 @@ void DestroiPagina(void* pagina)
     free(pag->nomePagina); // Liberando o espaço para o nome da página
     free(pag->enderecoArq); // Liberando o espaço para o endereço da página
     DestroiLista(pag->listaContrb, DestroiContribuicao); // Destruindo a lista de contribuições
-    DestroiLista(pag->listaLinks, Freedom); // Destruindo a lista de links
+    DestroiLista(pag->listaLinks, free); // Destruindo a lista de links
     free(pag); // Liberando espaço reservado para a página
 }
