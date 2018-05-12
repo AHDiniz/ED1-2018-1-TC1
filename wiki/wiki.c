@@ -377,7 +377,7 @@ void Wiki_RetiraContribuicao(Wiked* wiki, char* pagina, char* editor, char* arqu
     }
 
     // buscando a contribuição
-    Contribuicao *cont = (Contribuicao*) AchaItem(pag,posicaoCont);
+    Contribuicao* cont = (Contribuicao*) AchaItem(ListaContrbPagina(pag), posicaoCont);
 
     // verificando o editor da contribuição
     if( strcmp( ContribuicaoEditor(cont), editor) != 0)
@@ -530,7 +530,7 @@ void destroiWiked(void* wiki)
 
     // liberando as listas
     DestroiLista(w->paginas,DestroiPagina);
-    DestroiLista(w->editores,DestroiEditor2);
+    DestroiLista(w->editores,DestroiEditor);
 
     // liberando o struct
     free(w);
