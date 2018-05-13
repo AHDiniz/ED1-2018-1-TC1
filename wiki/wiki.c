@@ -5,9 +5,6 @@ wiki.c: implementações para a WikED!
 ********************************************/
 
 #include "wiki.h"
-#include "../pagina/pagina.h"
-#include "../lista/lista.h"
-#include "../log/log.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -179,7 +176,7 @@ Wiked* InicializaWiki(void)
 
 void Wiki_InserePagina(Wiked* wiki, char* pagina, char* arquivo)
 {
-    if(ProcuraPagina(wiki,pagina) >= -1) // verifica se ja existe uma página com esse nome ou se a lista é nula
+    if(ProcuraPagina(wiki,pagina) > -1) // verifica se ja existe uma página com esse nome ou se a lista é nula
     {
         ErroPagExiste(pagina); // caso sim, uma mansagem de erro sera exibina em log.txt
         return;                // e a função sera abortada
@@ -238,7 +235,7 @@ void Wiki_RetiraPagina(Wiked* wiki, char* pagina)
 void Wiki_InsereEditor(Wiked* wiki, char* editor)
 {
     // verifica e já existe um editor com esse nome
-    if(ProcuraEditor(wiki,editor) >= -1)
+    if(ProcuraEditor(wiki,editor) > -1)
     {
         ErroEdtExiste(editor); // caso sim, será exibida mensagem de erro em log.txt
         return;                // e a função sera abortada
@@ -313,14 +310,14 @@ void Wiki_InsereContribuicao(Wiked* wiki, char* pagina, char* editor, char* arqu
     Editor *ed =  (Editor*) AchaItem(wiki->editores,posicaoEd);
 
     // verifica se a contribuição já pertence à página
-    if(ProcuraContribuicaoPagina(pag,arquivo) == -1)
+    if(ProcuraContribuicaoPagina(pag,arquivo) > -1)
     {
         ErroContExiste(arquivo);
         return;
     }
 
     // verifica se a contribuição já pertence ao editor
-    if(ProcuraContribuicaoEditor(ed,arquivo) == -1)
+    if(ProcuraContribuicaoEditor(ed,arquivo) > -1)
     {
         ErroContExiste(arquivo);
         return;
@@ -523,7 +520,7 @@ void ImprimeWiked(Wiked* wiki)
     }
 }
 
-void destroiWiked(void* wiki)
+void DestroiWiked(void* wiki)
 {
     // convertendo para tipo Wiked
     Wiked *w = (Wiked*) wiki;

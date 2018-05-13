@@ -7,6 +7,11 @@ wiki.h: definições para implementação da WikED!
 #ifndef WIKI_H_
 #define WIKI_H_
 
+#include "../pagina/pagina.h"
+#include "../editor/editor.h"
+#include "../lista/lista.h"
+#include "../log/log.h"
+
 /*Estrutura da WIKED!
   Deve conter:
   - páginas
@@ -116,6 +121,6 @@ void ImprimeWiked(Wiked* wiki);
 * pre-condição: wiki não nula
 * pos-condição: toda memória liberada
 */
-void destroiWiked(void* wiki);
+void DestroiWiked(void* wiki);
 
 #endif

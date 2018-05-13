@@ -72,6 +72,7 @@ int main(int argc, char* argv[])
                             if(!strcmp(funcao,"RETIRAEDITOR"))
                             {
                                 Wiki_RetiraEditor(wiki,arg1);
+                            }
                         }
                     }
                     break;
@@ -91,6 +92,7 @@ int main(int argc, char* argv[])
                     {
                         Wiki_RetiraContribuicao(wiki,arg1,arg2,arg3);
                     }
+                    break;
             
             default: printf("ERRO: comando nao reconhecido\n"); // mensagem de erro em caso a função escolida não se enquadre
         }
@@ -103,6 +105,8 @@ int main(int argc, char* argv[])
         printf("ERRO: arquivo nao pode ser fechado\n");
         exit(0);
     }
+
+    DestroiWiked(wiki);
 
     return 0;
 }
