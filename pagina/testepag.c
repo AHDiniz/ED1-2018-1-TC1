@@ -3,6 +3,8 @@
 #include "../lista/lista.h"
 #include "../contribuicao/contribuicao.h"
 
+void PrintPagina(Pagina*);
+
 int main(void)
 {
     Pagina *pagina1 = InicializaPagina("Pagina1", "pagina1.txt");
@@ -10,34 +12,51 @@ int main(void)
     Contribuicao *c1 = InicializaContribuicao("Pagina1","editor","c1.txt");
     Contribuicao *c2 = InicializaContribuicao("Pagina1","editor","c2.txt");
     Contribuicao *c3 = InicializaContribuicao("Pagina2","editor","c3.txt");
-    int i;
 
     InsereContribuicaoPagina(pagina1,c1);
     InsereContribuicaoPagina(pagina1,c2);
     InsereContribuicaoPagina(pagina2,c3);
-    InsereContribuicaoPagina(pagina1,c1);
 
-    Contribuicao *aux;
+    PrintPagina(pagina1);
+    PrintPagina(pagina2);
 
-    printf("#1\nNome: %s\nArquivo: %s\n", PaginaNome(pagina1), PaginaArquivo(pagina1));
-    for(i = 0 ; i < TamanhoLista(ListaContrbPagina(pagina1)) ; i++)
-    {
-        aux = (Contribuicao*) AchaItem(ListaContrbPagina(pagina1), i);
-        printf("Cont %d: %s\n", i, ContribuicaoArquivo(aux));
-    }
+    InsereLink(pagina1,pagina2);
+    InsereLink(pagina2,pagina1);
 
-    printf("\n#2\nNome: %s\nArquivo: %s\n", PaginaNome(pagina2), PaginaArquivo(pagina2));
-    for(i = 0 ; i < TamanhoLista(ListaContrbPagina(pagina2)) ; i++)
-    {
-        aux = (Contribuicao*) AchaItem(ListaContrbPagina(pagina2), i);
-        printf("Cont %d: %s\n", i, ContribuicaoArquivo(aux));
-    }
+    PrintPagina(pagina1);
+    PrintPagina(pagina2);
 
-    //ImprimePagina(pagina1);
-    //ImprimePagina(pagina2);
+    printf("\nCaminho p1-p2: %d\nCaminho p2-p1: %d\n", Caminho(pagina1,pagina2), Caminho(pagina2,pagina1));
+
+    RetiraLink(pagina2,pagina1);
+
+    PrintPagina(pagina1);
+    PrintPagina(pagina2);
+    
+    ImprimePagina(pagina1);
+    ImprimePagina(pagina2);
 
     DestroiPagina(pagina1);
     DestroiPagina(pagina2);
 
     return 0;
+}
+
+void PrintPagina(Pagina* pagina)
+{
+    int i;
+    Contribuicao *aux;
+    Pagina *aux2;
+
+    printf("\nNome: %s\nArquivo: %s\n", PaginaNome(pagina), PaginaArquivo(pagina));
+    for(i = 0 ; i < TamanhoLista(ListaContrbPagina(pagina)) ; i++)
+    {
+        aux = (Contribuicao*) AchaItem(ListaContrbPagina(pagina), i);
+        printf("Cont %d: %s\n", i, ContribuicaoArquivo(aux));
+    }
+    for(i = 0 ; i < TamanhoLista(ListaLinksPagina(pagina)) ; i++)
+    {
+        aux2 = (Pagina*) AchaItem(ListaLinksPagina(pagina), i);
+        printf("Link %d:\nPag Nome: %s\nPag Arq: %s\n", i, PaginaNome(aux2), PaginaArquivo(aux2));
+    }
 }

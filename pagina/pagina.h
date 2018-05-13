@@ -9,11 +9,7 @@ pagina.h: definições para páginas
 #ifndef PAGINA_H_
 #define PAGINA_H_
 
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
 #include "../contribuicao/contribuicao.h"
-#include "../editor/editor.h"
 #include "../lista/lista.h"
 
 /*Estrutura da página
@@ -105,7 +101,7 @@ Retorno da lista de links:
 - Pré-condições: página alocada e não nula;
 - Pós-condições: nenhum efeito colateral;
 */
-Lista* ListaLinksPagina(Pagina *pagina);
+Lista* ListaLinksPagina(Pagina* pagina);
 
 /*Libera toda memória alocada em uma pagina
 * inputs: endereço de ponteiro genérico para página

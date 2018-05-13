@@ -6,6 +6,9 @@ Alan Herculano Diniz e Rafael Belmock Pedruzzi
 pagina.c: implementações para páginas
 ********************************************/
 
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include "pagina.h"
 
 // Implementação da Página:
@@ -47,8 +50,8 @@ void RetiraLink(Pagina* origem, Pagina* destino)
 {
     if (Caminho(origem, destino)) // Se existe link entre as páginas:
         for (int i = 0; i < TamanhoLista(origem->listaLinks); i++) // Varrendo cada item da lista de links
-            if (ConteudoItem(AchaItem(origem->listaLinks, i)) == destino) // Se o item for igual ao nome da página destino...
-                ListaRemove(origem->listaLinks, i, free); // O item será removido
+            if (AchaItem(origem->listaLinks, i) == destino) // Se o item for igual ao nome da página destino...
+                ListaRemove(origem->listaLinks, i, NULL); // O item será removido
     else
         printf("Nao ha link entre %s e %s para ser removido.", origem->nomePagina, destino->nomePagina); // Mensagem de erro
 }
@@ -57,24 +60,30 @@ void RetiraLink(Pagina* origem, Pagina* destino)
 int Caminho(Pagina *origem, Pagina *destino)
 {
     int i; // Variável de incrementação
+    Pagina *pag;
+
     for (i = 0; i < TamanhoLista(origem->listaLinks); i++) // Loop para comparar cada item da lista de links com o nome da outra página
-        if (ConteudoItem(AchaItem(origem->listaLinks, i)) == destino) // Comparando o nome da página com o conteúdo do item
+    {
+        pag = (Pagina*) AchaItem(origem->listaLinks, i);
+        if (pag == destino) // Comparando o nome da página com o conteúdo do item
             return 1; // Se o nome da página de destino estiver na lista, então há um caminho (TRUE)
+    }
     return 0; // Caso o nome da página do destino não esteja na lista, não há caminho (FALSE)
 }
 
 // Imprimindo a página num arquivo de texto:
 void ImprimePagina(Pagina* pagina)
 {
-    FILE* output; // Arquivo de sáida
-    FILE* contArq; // Arquivo auxiliar
+    FILE *output; // Arquivo de sáida
+    FILE *contArq; // Arquivo auxiliar
     int chr; // Variável auxiliar de impressão
     int i; // Variável de incrementação
-    Contribuicao* cont; // Variável auxiliar
+    Contribuicao *cont; // Variável auxiliar
+    Pagina *pag; // Variável auxiliar
     output = fopen(pagina->enderecoArq, "w"); // Abrindo o arquivo
     if (!output)
     {
-        printf("Arquivo nao encontrado.\n"); // Mensagem de erro
+        printf("Nao foi possivel abrir o arquivo.\n"); // Mensagem de erro
         return;
     }
     fprintf(output, "%s\n", pagina->nomePagina); // Imprimindo o nome da página
@@ -82,7 +91,7 @@ void ImprimePagina(Pagina* pagina)
     fprintf(output, "\n--> Historico de Contribuicoes:\n");
     for (i = 0; i < TamanhoLista(pagina->listaContrb); i++)
     {
-        cont = (Contribuicao*) ConteudoItem(AchaItem(pagina->listaContrb, i));
+        cont = (Contribuicao*) AchaItem(pagina->listaContrb, i);
         if (ContribuicaoEstado(cont))
         {
             fprintf(output, "%s %s\n", ContribuicaoEditor(cont), ContribuicaoArquivo(cont));
@@ -96,13 +105,14 @@ void ImprimePagina(Pagina* pagina)
     fprintf(output, "\n--> Lista de links:\n");
     for (i = 0; i < TamanhoLista(pagina->listaLinks); i++)
     {
-        fprintf(output, "%s\n", PaginaNome(ConteudoItem(AchaItem(pagina->listaLinks, i))));
+        pag = (Pagina*) AchaItem(pagina->listaLinks, i);
+        fprintf(output, "%s %s\n", pag->nomePagina, pag->enderecoArq);
     }
     // Imprimindo os textos:
     fprintf(output, "\n--> Textos:\n");
     for (i = 0; i < TamanhoLista(pagina->listaContrb); i++)
     {
-        cont = (Contribuicao*) ConteudoItem(AchaItem(pagina->listaContrb, i));
+        cont = (Contribuicao*) AchaItem(pagina->listaContrb, i);
         if (ContribuicaoEstado(cont))
         {
             contArq = fopen(ContribuicaoArquivo(cont), "r");
@@ -124,6 +134,7 @@ void ImprimePagina(Pagina* pagina)
 // Inserindo contribuição na página:
 void InsereContribuicaoPagina(Pagina* pagina, Contribuicao* contribuicao)
 {
+    /*
     // Verificando se o item já está na lista:
     for (int i = 0; i < TamanhoLista(pagina->listaContrb); i++)
         if ( !strcmp(ContribuicaoArquivo( (Contribuicao*) ConteudoItem(AchaItem(pagina->listaContrb, i))), ContribuicaoArquivo(contribuicao)))
@@ -131,7 +142,8 @@ void InsereContribuicaoPagina(Pagina* pagina, Contribuicao* contribuicao)
                 printf("A contribuicao ja esta na pagina.\n"); // Mensagem de erro
                 return;
             }
-    Item* contrbItem = NovoItem("Contribuicao", contribuicao); // Criando um novo item para ser inserido na lista
+    */
+    Item *contrbItem = NovoItem("Contribuicao", contribuicao); // Criando um novo item para ser inserido na lista
     ListaAdd(pagina->listaContrb, contrbItem); // Adicionando um item na lista
 }
 
@@ -166,7 +178,7 @@ void DestroiPagina(void* pagina)
 
     free(pag->nomePagina); // Liberando o espaço para o nome da página
     free(pag->enderecoArq); // Liberando o espaço para o endereço da página
+    DestroiLista(pag->listaLinks, NULL); // Destruindo a lista de links
     DestroiLista(pag->listaContrb, DestroiContribuicao); // Destruindo a lista de contribuições
-    DestroiLista(pag->listaLinks, free); // Destruindo a lista de links
     free(pag); // Liberando espaço reservado para a página
 }

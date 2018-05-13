@@ -13,7 +13,6 @@ contribuicao.c: implementações para contribuições
 
 struct tipoContribuicao
 {
-
     char *arquivo;
     char *editor;
     char *pagina;
