@@ -41,10 +41,6 @@ Contribuicao* InicializaContribuicao(const char* pagina, const char* editor, con
 void RetiraContribuicao(Contribuicao* contribuicao)
 {
     contribuicao->estado = 0; // Alterando estado para "removido"
-
-    free(contribuicao->editor); // liberando o editor para poupar memória
-    free(contribuicao->pagina); // liberando a página para poupar memória
-    contribuicao->editor = contribuicao->pagina = NULL;
 }
 
 char* ContribuicaoArquivo(Contribuicao* contribuicao)
@@ -80,19 +76,7 @@ void DestroiContribuicao(void* contribuicao)
 
     // Liberando as strings
     free(c->arquivo); // liberando arquivo
-
-    if(c->editor != NULL) // verificando se a string já não foi removida (pertençe somente ao histórico)
-    {
-        free(c->editor); // liberando editor
-        c->editor = NULL; // medida de sugurança
-    }
-
-    if(c->pagina != NULL) // verificando se a string já não foi removida (pertençe somente ao histórico)
-    {
-        free(c->pagina); // liberando pagina
-        c->pagina = NULL; // medida de sugurança
-    }
-
-    // Liberando a contribuição
-    free(c);
+    free(c->editor); // liberando editor
+    free(c->pagina); // liberando pagina
+    free(c); // Liberando a contribuição
 }

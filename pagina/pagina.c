@@ -88,7 +88,7 @@ void ImprimePagina(Pagina* pagina)
     }
     fprintf(output, "%s\n", pagina->nomePagina); // Imprimindo o nome da página
     // Imprimindo o hístorico de contribuições:
-    fprintf(output, "\n--> Historico de Contribuicoes:\n");
+    fprintf(output, "\n--> Historico de contribuicoes:\n");
     for (i = 0; i < TamanhoLista(pagina->listaContrb); i++)
     {
         cont = (Contribuicao*) AchaItem(pagina->listaContrb, i);
@@ -98,7 +98,7 @@ void ImprimePagina(Pagina* pagina)
         }
         else
         {
-            fprintf(output, "%s %s (retirada)\n", ContribuicaoEditor(cont), ContribuicaoArquivo(cont));
+            fprintf(output, "%s %s <<retirada>>\n", ContribuicaoEditor(cont), ContribuicaoArquivo(cont));
         }
     }
     // Imprimindo os links:
@@ -109,19 +109,21 @@ void ImprimePagina(Pagina* pagina)
         fprintf(output, "%s %s\n", pag->nomePagina, pag->enderecoArq);
     }
     // Imprimindo os textos:
-    fprintf(output, "\n--> Textos:\n");
+    fprintf(output, "\n--> Textos:");
     for (i = 0; i < TamanhoLista(pagina->listaContrb); i++)
     {
         cont = (Contribuicao*) AchaItem(pagina->listaContrb, i);
         if (ContribuicaoEstado(cont))
         {
             contArq = fopen(ContribuicaoArquivo(cont), "r");
-            fprintf(output, "\n-------- %s (%s) --------\n\n", ContribuicaoArquivo(cont), ContribuicaoEditor(cont));
+            fprintf(output, "\n\n-------- %s (%s) --------\n\n", ContribuicaoArquivo(cont), ContribuicaoEditor(cont));
+
+            chr = getc(contArq);
 
             while(!feof(contArq))
             {
-                chr = getc(contArq);
                 fputc(chr, output);
+                chr = getc(contArq);
             }
 
             fclose(contArq);
