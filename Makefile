@@ -1,38 +1,49 @@
-# Makefile para o projeto de Estrutura da Dados I
-#
-# Alan Herculano Diniz e Rafael Belmock Pedruzzi
+# Makefile para facilitar a compilação para Linux
 
-# Objetivo da compilação é o executável trab (.exe no Windows e .out em outros SO's)
-all: trab
+# Compilador:
+CC = gcc
 
-# Compilando o trabalho dado que já se tem o arquivo objeto da main
-trab: main.o
-	gcc -o trab main.o
+# Opções de compilação:
+CFLAGS = -Wall -g -O3
 
-# Compilando a main
+# Nome do programa executável:
+EXE = wikedLinux.out
+
+# Alvo principal da compilação:
+all: $(EXE)
+
+# Receita de compilação do executável:
+$(EXE): main.o contribuicao.o editor.o lista.o log.o pagina.o wiki.o
+	$(CC) $(CFLAGS) -o $(EXE) main.o contribuicao.o editor.o lista.o log.o pagina.o wiki.o
+
+# Receita de compilação do arquivo-objeto do ponto de entrada:
 main.o: main.c
-	gcc -c main.c
+	$(CC) $(CFLAGS) -c main.c
 
-# Compilando os arquivos da lista genérica sem links
-lista/lista.o: lista/lista.c lista/lista.h
-	gcc -c lista/lista.c
+# Receita de compilação do arquiv-objeto da biblioteca do TAD de contribuição:
+log.o: log/log.c log/log.h
+	$(CC) $(CFLAGS) -c log/log.c
 
-# Compilando os arquivos da contribuição sem links
-contribuicao/contribuicao.o: contribuicao/contribuicao.c contribuicao/contribuicao.h
-	gcc -c contribuicao/contribuicao.c
+# Receita de compilação do arquivo-objeto da biblioteca do TAD de wiki:
+wiki.o: wiki/wiki.c wiki/wiki.h pagina.o lista.o log.o contribuicao.o
+	$(CC) $(CFLAGS) -c wiki/wiki.c pagina.o lista.o log.o contribuicao.o
 
-# Compilando os arquivos do editor sem links
-editor/editor.o: editor/editor.c editor/editor.h
-	gcc -c editor/editor.c
+# Receita de compilação do arquiv-objeto da biblioteca do TAD de contribuição:
+pagina.o: pagina/pagina.c pagina/pagina.h editor.o contribuicao.o lista.o
+	$(CC) $(CFLAGS) -c pagina/pagina.c editor.o contribuicao.o lista.o
 
-# Compilando os arquivos da biblioteca de erros sem links
-log/log.o: log/log.c log/log.h
-	gcc -c log/log.c
+# Receita de compilação do arquiv-objeto da biblioteca do TAD de contribuição:
+contribuicao.o: contribuicao/contribuicao.c contribuicao/contribuicao.h
+	$(CC) $(CFLAGS) -c contribuicao/contribuicao.c
 
-# Compilando os arquivos da página sem links
-pagina/pagina.o: pagina/pagina.c pagina/pagina.h
-	gcc -c pagina/pagina.c
+# Receita de compilação do arquiv-objeto da biblioteca do TAD de contribuição:
+editor.o: editor/editor.c editor/editor.h contribuicao.o
+	$(CC) $(CFLAGS) -c editor/editor.c contribuicao.o
 
-# Compilando os arquivos da wiki sem links
-wiki/wiki.o: wiki/wiki.c wiki/wiki.h
-	gcc -c wiki/wiki.c
+# Receita de compilação do arquiv-objeto da biblioteca do TAD de contribuição:
+lista.o: lista/lista.c lista/lista.h
+	$(CC) $(CFLAGS) -c lista/lista.c
+
+# Comando para limpar todos os arquivos objetos:
+clean:
+	rm *.o
