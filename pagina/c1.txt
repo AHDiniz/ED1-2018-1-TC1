@@ -1,5 +1,0 @@
-Ola!
-
-Este eh c1.txt.
-Na verdade eh apenas um arquivo generico de teste e nao possui nada realmente util.
-Obrigado pela atencao.

@@ -51,6 +51,14 @@ void RetiraLink(Pagina* origem, Pagina* destino);
 * pre-condição: páginas válidas
 * pos-condição: nenhum
 */
+int VerificaLink(Pagina* origem, Pagina* destino);
+
+/*Verifica se há um caminho entre duas páginas
+* inputs: a página origem e a página destino
+* outputs: inteiro de carater booleano (0 ou 1)
+* pre-condição: páginas válidas
+* pos-condição: nenhum
+*/
 int Caminho(Pagina* origem, Pagina* destino);
 
 /*Imprime uma página num arquivo .txt

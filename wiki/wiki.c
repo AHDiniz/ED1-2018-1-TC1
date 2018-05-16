@@ -208,7 +208,7 @@ void Wiki_RetiraPagina(Wiked* wiki, char* pagina)
     for(i = 0 ; i < TamanhoLista(wiki->paginas) ; i++)
     {
         aux = (Pagina*) AchaItem(wiki->paginas, i);
-        if(Caminho(aux,pag))
+        if(VerificaLink(aux,pag))
         {
             RetiraLink(aux,pag);
         }
@@ -412,7 +412,7 @@ void Wiki_InsereLink(Wiked* wiki, char* origem, char* destino)
     Pagina *d = (Pagina*) AchaItem(wiki->paginas,posicaoDestino);
 
     // verifica se já existe um link entre as páginas
-    if(Caminho(o,d))
+    if(VerificaLink(o,d))
     {
         ErroLinkExiste(origem,destino); // caso sim, será exibida mensagem de erro em log.txt
         return;                         // e a função sera abortada
@@ -447,7 +447,7 @@ void Wiki_RetiraLink(Wiked* wiki, char* origem, char* destino)
     Pagina *d = (Pagina*) AchaItem(wiki->paginas,posicaoDestino);
 
     // verifica se existe um link entre as páginas
-    if(Caminho(o,d) == 0)
+    if(VerificaLink(o,d) == 0)
     {
         ErroLinkInexistente(origem,destino); // caso não, será exibida mensagem de erro em log.txt
         return;                              // e a função sera abortada
@@ -526,8 +526,8 @@ void DestroiWiked(void* wiki)
     Wiked *w = (Wiked*) wiki;
 
     // liberando as listas
-    DestroiLista(w->paginas,DestroiPagina);
-    DestroiLista(w->editores,DestroiEditor2);
+    DestroiLista(w->paginas,DestroiPagina); // liberando a lista e as contribuições
+    DestroiLista(w->editores,DestroiEditor2); // liberando a lista mas não as contribuições
 
     // liberando o struct
     free(w);

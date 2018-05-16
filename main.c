@@ -14,12 +14,17 @@ main.c: ponto de entrada do programa
 
 int main(int argc, char* argv[])
 {
-    FILE *entrada = fopen(argv[1], "r"); // abrindo arquivo de entrada para leitura
+    FILE *entrada;
     char funcao[MAXTAM]; // auxiliar que guarda a função
     // auxiliares que guardam os argumentos
     char arg1[MAXTAM];
     char arg2[MAXTAM];
     char arg3[MAXTAM];
+
+    entrada = fopen("log.txt", "w"); // inicializando arquivo de log
+    fclose(entrada);
+
+    entrada = fopen(argv[1], "r"); // abrindo arquivo de entrada para leitura
 
     Wiked *wiki = InicializaWiki(); // inicializando a WikED!
 
