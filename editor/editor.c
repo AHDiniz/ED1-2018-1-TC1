@@ -25,6 +25,8 @@ Editor* InicializaEditor(const char* nome)
     strcpy(e->nome,nome);                      // copiando nome
 
     e->contribuicoes = NovaLista("Contribuicao"); // inicializando lista de contribuições vazia
+
+    return e;
 }
 
 void InsereContribuicaoEditor(Editor* editor, Contribuicao* contribuicao)
